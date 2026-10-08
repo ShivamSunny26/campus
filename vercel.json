@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "campus-hustle",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://campus-cdti.onrender.com/api/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://campus-cdti.onrender.com/health"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
+    }
+  ]
+}

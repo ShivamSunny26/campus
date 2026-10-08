@@ -1,6 +1,21 @@
 import uuid
 
-from tests.conftest import listing_payload, unique_category
+import pytest
+
+from tests.conftest import listing_payload, set_user_fields, unique_category
+
+LISTING_FIELDS = {
+    "id",
+    "seller_id",
+    "title",
+    "description",
+    "category",
+    "price",
+    "price_unit",
+    "pickup_location",
+    "status",
+    "quantity",
+}
 
 
 def test_create_listing_returns_201(client, register_user):
@@ -11,11 +26,13 @@ def test_create_listing_returns_201(client, register_user):
     )
     assert resp.status_code == 201
     body = resp.json()
+    assert set(body) == LISTING_FIELDS
     assert body["title"] == "Api test item"
     assert body["seller_id"] == account["user"]["id"]
     assert body["status"] == "active"
     assert body["category"] == category
     assert float(body["price"]) == 12.5
+    assert body["quantity"] == 2
 
 
 def test_create_listing_requires_auth(client):
@@ -28,6 +45,31 @@ def test_create_listing_validation_error(client, register_user):
     payload = listing_payload(unique_category())
     payload["price"] = "0"
     resp = client.post("/api/v1/listings", json=payload, headers=account["headers"])
+    assert resp.status_code == 422
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("title", "ab"),
+        ("description", "abc"),
+        ("category", "x"),
+        ("price", "0.00"),
+        ("price", "-1.00"),
+        ("price", "9999999999999.99"),
+        ("quantity", 0),
+        ("quantity", 100001),
+        ("pickup_location", "x"),
+    ],
+)
+def test_create_listing_rejects_invalid_field_values(
+    client, shared_account, field, value
+):
+    payload = listing_payload(unique_category())
+    payload[field] = value
+    resp = client.post(
+        "/api/v1/listings", json=payload, headers=shared_account["headers"]
+    )
     assert resp.status_code == 422
 
 
@@ -56,6 +98,44 @@ def test_list_listings_is_public(client):
 def test_list_listings_rejects_limit_above_50(client):
     resp = client.get("/api/v1/listings", params={"limit": 51})
     assert resp.status_code == 422
+
+
+def test_list_listings_rejects_limit_below_1(client):
+    resp = client.get("/api/v1/listings", params={"limit": 0})
+    assert resp.status_code == 422
+
+
+def test_list_listings_rejects_negative_offset(client):
+    resp = client.get("/api/v1/listings", params={"offset": -1})
+    assert resp.status_code == 422
+
+
+def test_list_listings_rejects_category_longer_than_40_chars(client):
+    resp = client.get("/api/v1/listings", params={"category": "c" * 41})
+    assert resp.status_code == 422
+
+
+def test_list_listings_offset_pagination(client, register_user):
+    account = register_user()
+    category = unique_category()
+    first = client.post(
+        "/api/v1/listings", json=listing_payload(category), headers=account["headers"]
+    ).json()
+    second = client.post(
+        "/api/v1/listings", json=listing_payload(category), headers=account["headers"]
+    ).json()
+
+    page_one = client.get(
+        "/api/v1/listings", params={"category": category, "limit": 1, "offset": 0}
+    )
+    assert page_one.status_code == 200
+    assert [item["id"] for item in page_one.json()] == [second["id"]]
+
+    page_two = client.get(
+        "/api/v1/listings", params={"category": category, "limit": 1, "offset": 1}
+    )
+    assert page_two.status_code == 200
+    assert [item["id"] for item in page_two.json()] == [first["id"]]
 
 
 def test_get_listing_by_id(client, register_user):
@@ -125,6 +205,34 @@ def test_update_listing_not_found(client, register_user):
     assert resp.status_code == 404
 
 
+def test_moderator_can_manage_any_listing(client, register_user):
+    owner = register_user()
+    moderator = register_user()
+    created = client.post(
+        "/api/v1/listings",
+        json=listing_payload(unique_category()),
+        headers=owner["headers"],
+    ).json()
+
+    set_user_fields(moderator["user"]["id"], role="moderator")
+
+    payload = listing_payload(unique_category())
+    payload["title"] = "Moderator edited title"
+    updated = client.patch(
+        f"/api/v1/listings/{created['id']}",
+        json=payload,
+        headers=moderator["headers"],
+    )
+    assert updated.status_code == 200
+    assert updated.json()["title"] == "Moderator edited title"
+
+    deleted = client.delete(
+        f"/api/v1/listings/{created['id']}", headers=moderator["headers"]
+    )
+    assert deleted.status_code == 204
+    assert client.get(f"/api/v1/listings/{created['id']}").status_code == 404
+
+
 def test_delete_listing_by_owner_hides_it(client, register_user):
     account = register_user()
     category = unique_category()
@@ -132,7 +240,9 @@ def test_delete_listing_by_owner_hides_it(client, register_user):
         "/api/v1/listings", json=listing_payload(category), headers=account["headers"]
     ).json()
 
-    resp = client.delete(f"/api/v1/listings/{created['id']}", headers=account["headers"])
+    resp = client.delete(
+        f"/api/v1/listings/{created['id']}", headers=account["headers"]
+    )
     assert resp.status_code == 204
 
     assert client.get(f"/api/v1/listings/{created['id']}").status_code == 404
@@ -149,7 +259,9 @@ def test_delete_listing_forbidden_for_non_owner(client, register_user):
         headers=owner["headers"],
     ).json()
 
-    resp = client.delete(f"/api/v1/listings/{created['id']}", headers=intruder["headers"])
+    resp = client.delete(
+        f"/api/v1/listings/{created['id']}", headers=intruder["headers"]
+    )
     assert resp.status_code == 403
 
 
@@ -163,3 +275,27 @@ def test_delete_listing_requires_auth(client, register_user):
 
     resp = client.delete(f"/api/v1/listings/{created['id']}")
     assert resp.status_code in (401, 403)
+
+
+def test_delete_listing_not_found(client, register_user):
+    account = register_user()
+    resp = client.delete(f"/api/v1/listings/{uuid.uuid4()}", headers=account["headers"])
+    assert resp.status_code == 404
+
+
+def test_updating_soft_deleted_listing_does_not_resurrect_it(client, register_user):
+    account = register_user()
+    created = client.post(
+        "/api/v1/listings",
+        json=listing_payload(unique_category()),
+        headers=account["headers"],
+    ).json()
+    client.delete(f"/api/v1/listings/{created['id']}", headers=account["headers"])
+
+    payload = listing_payload(unique_category())
+    payload["title"] = "Attempted resurrection"
+    resp = client.patch(
+        f"/api/v1/listings/{created['id']}", json=payload, headers=account["headers"]
+    )
+    assert resp.status_code == 200
+    assert client.get(f"/api/v1/listings/{created['id']}").status_code == 404

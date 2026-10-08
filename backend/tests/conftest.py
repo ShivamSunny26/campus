@@ -5,6 +5,7 @@ import uuid
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import delete, select
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.core.config import settings
 from app.db.session import AsyncSessionLocal, engine
@@ -37,11 +38,65 @@ async def _cleanup_test_rows():
         )
         user_ids = [row[0] for row in result]
         if user_ids:
-            await session.execute(delete(Listing).where(Listing.seller_id.in_(user_ids)))
-            await session.execute(delete(RefreshSession).where(RefreshSession.user_id.in_(user_ids)))
+            await session.execute(
+                delete(Listing).where(Listing.seller_id.in_(user_ids))
+            )
+            await session.execute(
+                delete(RefreshSession).where(RefreshSession.user_id.in_(user_ids))
+            )
             await session.execute(delete(User).where(User.id.in_(user_ids)))
         await session.commit()
     await engine.dispose()
+
+
+def _register_account(
+    client, email: str | None = None, password: str = TEST_PASSWORD
+) -> dict:
+    email = email or f"{TEST_EMAIL_TAG}{uuid.uuid4().hex[:12]}@example.com"
+    resp = client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": email,
+            "password": password,
+            "full_name": "Api Test User",
+            "campus_name": "Test Campus",
+        },
+    )
+    assert resp.status_code == 201, resp.text
+    user = resp.json()
+    login = client.post(
+        "/api/v1/auth/login",
+        json={"email": email, "password": password},
+    )
+    assert login.status_code == 200, login.text
+    tokens = login.json()
+    return {
+        "email": email,
+        "password": password,
+        "user": user,
+        "access": tokens["access_token"],
+        "refresh": tokens["refresh_token"],
+        "headers": {"Authorization": f"Bearer {tokens['access_token']}"},
+    }
+
+
+def set_user_fields(user_id: str, **fields) -> None:
+    async def run():
+        helper_engine = create_async_engine(settings.DATABASE_URL)
+        try:
+            session_factory = async_sessionmaker(
+                helper_engine, class_=AsyncSession, expire_on_commit=False
+            )
+            async with session_factory() as session:
+                user = await session.get(User, uuid.UUID(str(user_id)))
+                assert user is not None, f"test user {user_id} not found"
+                for name, value in fields.items():
+                    setattr(user, name, value)
+                await session.commit()
+        finally:
+            await helper_engine.dispose()
+
+    asyncio.run(run())
 
 
 @pytest.fixture(scope="session")
@@ -55,34 +110,14 @@ def client():
 @pytest.fixture()
 def register_user(client):
     def _register(email: str | None = None, password: str = TEST_PASSWORD):
-        email = email or f"{TEST_EMAIL_TAG}{uuid.uuid4().hex[:12]}@example.com"
-        resp = client.post(
-            "/api/v1/auth/register",
-            json={
-                "email": email,
-                "password": password,
-                "full_name": "Api Test User",
-                "campus_name": "Test Campus",
-            },
-        )
-        assert resp.status_code == 201, resp.text
-        user = resp.json()
-        login = client.post(
-            "/api/v1/auth/login",
-            json={"email": email, "password": password},
-        )
-        assert login.status_code == 200, login.text
-        tokens = login.json()
-        return {
-            "email": email,
-            "password": password,
-            "user": user,
-            "access": tokens["access_token"],
-            "refresh": tokens["refresh_token"],
-            "headers": {"Authorization": f"Bearer {tokens['access_token']}"},
-        }
+        return _register_account(client, email, password)
 
     return _register
+
+
+@pytest.fixture(scope="module")
+def shared_account(client):
+    return _register_account(client)
 
 
 def unique_category() -> str:

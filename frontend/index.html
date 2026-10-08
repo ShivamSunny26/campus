@@ -1,210 +1,1629 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campus Hustle — Campus Marketplace</title>
-  <meta name="description" content="A polished campus marketplace prototype for buying, selling and bargaining." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <meta name="description" content="Campus Hustle - High-Trust Peer-to-Peer Campus Marketplace for Textbooks, Dorm Gear, Student Tech & Services"/>
+  <title>Campus Hustle — Your Campus. Your Marketplace.</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CSS CDN with Full Custom Design System Tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#3525cd",
+            "primary-container": "#4f46e5",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#dad7ff",
+            "primary-fixed": "#e2dfff",
+            "primary-fixed-dim": "#c3c0ff",
+            "on-primary-fixed": "#0f0069",
+            "on-primary-fixed-variant": "#3323cc",
+            "secondary": "#006c49",
+            "secondary-container": "#6cf8bb",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#00714d",
+            "secondary-fixed": "#6ffbbe",
+            "secondary-fixed-dim": "#4edea3",
+            "on-secondary-fixed": "#002113",
+            "on-secondary-fixed-variant": "#005236",
+            "tertiary": "#684000",
+            "tertiary-container": "#885500",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-container": "#ffd4a4",
+            "tertiary-fixed": "#ffddb8",
+            "tertiary-fixed-dim": "#ffb95f",
+            "on-tertiary-fixed": "#2a1700",
+            "on-tertiary-fixed-variant": "#653e00",
+            "surface": "#f8f9ff",
+            "surface-dim": "#cbdbf5",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "surface-container": "#e5eeff",
+            "surface-container-high": "#dce9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#464555",
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff",
+            "outline": "#777587",
+            "outline-variant": "#c7c4d8",
+            "surface-tint": "#4d44e3",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "on-error-container": "#93000a",
+            "electric-indigo-dark": "#3730A3",
+            "electric-indigo-light": "#EEF2FF",
+            "campus-emerald-dark": "#065F46",
+            "campus-emerald-light": "#ECFDF5",
+            "trust-surface": "#F8FAFC",
+            "border-subtle": "#E2E8F0"
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "sm": "0.25rem",
+            "md": "0.75rem",
+            "lg": "1rem",
+            "xl": "1.25rem",
+            "2xl": "1.5rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-mark">CH</div>
+<body class="bg-surface font-sans text-on-surface antialiased min-h-screen flex flex-col">
+
+  <!-- ======================================================================
+       GLOBAL APP HEADER (Sticky top)
+       ====================================================================== -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-b border-border-subtle/40">
+    <div class="h-16 px-4 md:px-8 max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <!-- Brand & Campus Hub Selector -->
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="#home" class="flex items-center gap-2 group flex-shrink-0" onclick="navigateTo('home')">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center text-on-primary font-extrabold shadow-sm group-hover:scale-105 transition-transform">
+            CH
+          </div>
+          <span class="font-bold text-lg tracking-tight text-on-surface hidden sm:inline">Campus Hustle</span>
+        </a>
+
+        <div class="h-4 w-px bg-outline-variant/40 mx-0.5 hidden xs:block"></div>
+
+        <!-- Campus Selector Pill -->
+        <button id="campus-picker-btn" type="button" class="flex items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded-full text-on-surface-variant hover:bg-surface-container transition-colors max-w-[170px] xs:max-w-[210px] text-xs font-semibold shadow-xs">
+          <span class="material-symbols-outlined text-secondary text-sm flex-shrink-0">location_on</span>
+          <span id="header-campus-name" class="truncate text-on-surface">UC Berkeley</span>
+          <span class="material-symbols-outlined text-xs flex-shrink-0 text-outline">expand_more</span>
+        </button>
+      </div>
+
+      <!-- Header Actions: Backend Status Ping, Notifications Bell, Auth / User Profile -->
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <!-- Live Backend Status Pill -->
+        <div id="backend-status-pill" title="Live Backend: https://campus-cdti.onrender.com" class="hidden sm:flex items-center gap-1.5 bg-surface-container-lowest border border-border-subtle px-2.5 py-1 rounded-full text-[11px] font-semibold text-on-surface-variant shadow-xs cursor-pointer" onclick="testBackendConnection()">
+          <span id="backend-dot" class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          <span id="backend-text">Render API Connected</span>
+        </div>
+
+        <!-- Notifications Bell -->
+        <button id="notifications-btn" aria-label="Notifications" type="button" class="relative w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-xl">notifications</span>
+          <span id="notification-badge" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface"></span>
+        </button>
+
+        <!-- User Profile Avatar or Sign-in button -->
+        <div id="header-user-container" class="flex items-center pl-1">
+          <button id="header-avatar-btn" type="button" class="w-9 h-9 rounded-full ring-2 ring-primary/20 overflow-hidden flex items-center justify-center bg-primary text-on-primary font-bold text-sm shadow-xs hover:ring-primary/50 transition-all" onclick="navigateTo('profile')">
+            <span id="header-avatar-initials">AC</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT CONTAINER
+       ====================================================================== -->
+  <main class="flex-1 w-full pt-16 pb-safe bg-surface min-h-screen">
+
+    <!-- ------------------------------------------------------------------
+         VIEW 1: HOME FEED (#view-home)
+         ------------------------------------------------------------------ -->
+    <section id="view-home" class="view-panel active max-w-7xl mx-auto w-full px-4 md:px-8 py-3 space-y-4">
+      <!-- Dynamic Campus Status Bar -->
+      <div class="w-full bg-campus-emerald-light rounded-xl p-3 flex items-center justify-between shadow-xs border border-secondary/15">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-secondary text-base filled">verified</span>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs text-campus-emerald-dark font-bold tracking-wide uppercase">Verified Student Hub</p>
+            <p id="campus-feed-subtext" class="text-sm text-on-surface font-semibold truncate">UC Berkeley • 412 listings live today</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 pl-2 flex-shrink-0">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+          </span>
+          <span class="text-xs text-secondary font-bold">Sync</span>
+        </div>
+      </div>
+
+      <!-- Hero Section -->
+      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-surface-container-high via-surface-container to-surface-container-low p-5 md:p-8 shadow-sm border border-border-subtle/50">
+        <div class="absolute -right-6 -bottom-8 w-40 h-40 rounded-full bg-primary-fixed opacity-40 pointer-events-none"></div>
+        <div class="absolute right-4 top-4 w-12 h-12 rounded-full bg-secondary-container/60 pointer-events-none flex items-center justify-center">
+          <span class="material-symbols-outlined text-secondary text-2xl">bolt</span>
+        </div>
+        <div class="relative z-10 flex flex-col gap-2 max-w-xl">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest w-fit shadow-xs">
+            <span class="material-symbols-outlined text-primary text-xs filled">school</span>
+            <span class="text-xs text-primary font-bold">Dorm to Quad Exchange</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-on-surface tracking-tight leading-tight">
+            Your campus.<br/>Your marketplace.
+          </h1>
+          <p class="text-sm text-on-surface-variant leading-relaxed max-w-md">
+            Buy, sell, and trade textbooks, dorm essentials, and student tech without shipping fees or sketchy meetups.
+          </p>
+          <div class="flex flex-wrap items-center gap-2.5 pt-2">
+            <button type="button" class="h-11 px-5 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center gap-1.5 shadow-md hover:bg-primary active:scale-95 transition-all" onclick="navigateTo('explore')">
+              <span>Explore Deals</span>
+              <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+            <button type="button" class="h-11 px-4 rounded-xl bg-surface-container-lowest text-secondary font-bold text-sm flex items-center gap-1.5 shadow-xs hover:bg-surface-container active:scale-95 transition-all border border-border-subtle" onclick="navigateTo('create')">
+              <span class="material-symbols-outlined text-base">add_circle</span>
+              <span>Sell Fast</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filter Bar -->
+      <div class="flex items-center gap-2.5 pt-1">
+        <div class="relative flex-1 flex items-center">
+          <span class="material-symbols-outlined absolute left-3.5 text-outline text-xl pointer-events-none">search</span>
+          <input id="home-search-input" type="search" placeholder="Search dorm fridges, CS textbooks, noise-canceling headphones..." class="w-full h-12 pl-11 pr-10 rounded-xl bg-surface-container-lowest text-sm text-on-surface placeholder:text-outline shadow-xs border border-border-subtle/80 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+          <button id="home-search-clear" type="button" class="hidden absolute right-3 w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-outline hover:text-on-surface text-xs">
+            <span class="material-symbols-outlined text-xs">close</span>
+          </button>
+        </div>
+        <button id="open-filter-btn" type="button" class="h-12 px-3.5 rounded-xl bg-surface-container-lowest flex items-center gap-1 text-on-surface shadow-xs border border-border-subtle/80 hover:bg-surface-container active:scale-95 transition-transform" onclick="openFiltersModal()">
+          <span class="material-symbols-outlined text-xl text-primary">tune</span>
+          <span class="text-xs font-bold hidden sm:inline">Filters</span>
+          <span id="active-filter-count" class="w-5 h-5 rounded-full bg-primary text-on-primary text-[11px] font-bold flex items-center justify-center">2</span>
+        </button>
+      </div>
+
+      <!-- Horizontal Scrollable Category Pills -->
+      <div class="py-1">
+        <div id="home-category-pills" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+          <button type="button" class="cat-pill active flex items-center gap-1.5 px-4 py-2 rounded-full bg-electric-indigo-light text-primary font-bold text-xs flex-shrink-0 shadow-xs border border-primary/20" data-cat="all">
+            <span class="material-symbols-outlined text-sm">auto_awesome</span>
+            <span>All Items</span>
+          </button>
+          <button type="button" class="cat-pill flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-bold text-xs flex-shrink-0 shadow-xs border border-border-subtle hover:bg-surface-container" data-cat="Electronics">
+            <span>💻</span>
+            <span>Tech & Audio</span>
+          </button>
+          <button type="button" class="cat-pill flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-bold text-xs flex-shrink-0 shadow-xs border border-border-subtle hover:bg-surface-container" data-cat="Books">
+            <span>📚</span>
+            <span>Notes & Books</span>
+          </button>
+          <button type="button" class="cat-pill flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-bold text-xs flex-shrink-0 shadow-xs border border-border-subtle hover:bg-surface-container" data-cat="Dorm Comfort">
+            <span>🛋️</span>
+            <span>Dorm Comfort</span>
+          </button>
+          <button type="button" class="cat-pill flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-bold text-xs flex-shrink-0 shadow-xs border border-border-subtle hover:bg-surface-container" data-cat="Bikes & Wheels">
+            <span>🚲</span>
+            <span>Bikes & Wheels</span>
+          </button>
+          <button type="button" class="cat-pill flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-bold text-xs flex-shrink-0 shadow-xs border border-border-subtle hover:bg-surface-container" data-cat="Services">
+            <span>✨</span>
+            <span>Services & Gigs</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Listings Grid Header -->
+      <div class="flex items-center justify-between pt-2">
         <div>
-          <strong>Campus Hustle</strong>
-          <span>your campus. your market.</span>
+          <h2 class="text-base sm:text-lg font-bold text-on-surface">Fresh Campus Listings</h2>
+          <p class="text-xs text-on-surface-variant">Live verified student listings nearby</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5" onclick="refreshListings()">
+            <span class="material-symbols-outlined text-sm">refresh</span>
+            <span>Sync</span>
+          </button>
         </div>
       </div>
 
-      <nav class="side-nav">
-        <button class="nav-item active" data-page="home"><span>⌂</span> Explore</button>
-        <button class="nav-item" data-page="saved"><span>♡</span> Saved <b>4</b></button>
-        <button class="nav-item" data-page="messages"><span>◌</span> Messages <b class="hot">3</b></button>
-        <button class="nav-item" data-page="orders"><span>▣</span> My deals</button>
-        <button class="nav-item" data-page="seller"><span>▤</span> Seller studio</button>
-      </nav>
+      <!-- Dynamic Listings Grid -->
+      <div id="home-listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-1">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
 
-      <div class="campus-card">
-        <div class="campus-icon">⌖</div>
+    <!-- ------------------------------------------------------------------
+         VIEW 2: MARKETPLACE EXPLORE (#view-explore)
+         ------------------------------------------------------------------ -->
+    <section id="view-explore" class="view-panel max-w-7xl mx-auto w-full px-4 md:px-8 py-3 space-y-4">
+      <!-- Search & Sorting Deck -->
+      <div class="sticky top-16 z-30 bg-surface/95 backdrop-blur-md -mx-4 px-4 py-2 border-b border-border-subtle/50 space-y-2.5">
+        <div class="flex items-center gap-2">
+          <div class="relative flex-1">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-xl pointer-events-none">search</span>
+            <input id="explore-search-input" type="text" placeholder="Search books, tech, dorm gear..." class="w-full h-11 pl-11 pr-9 rounded-full bg-surface-container-low text-on-surface text-sm placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest transition-all shadow-xs border border-border-subtle"/>
+            <button id="explore-clear-search" type="button" class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 items-center justify-center rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface text-xs">
+              <span class="material-symbols-outlined text-xs">close</span>
+            </button>
+          </div>
+          <!-- Filter Trigger -->
+          <button type="button" class="relative h-11 px-3.5 rounded-full bg-surface-container-low hover:bg-surface-container active:scale-95 transition-all flex items-center gap-1.5 text-on-surface text-xs font-bold shadow-xs border border-border-subtle" onclick="openFiltersModal()">
+            <span class="material-symbols-outlined text-lg text-primary">tune</span>
+            <span class="hidden xs:inline">Filters</span>
+            <span id="explore-filter-count" class="w-5 h-5 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center">2</span>
+          </button>
+          <!-- Quick Sort Dropdown -->
+          <div class="relative">
+            <select id="sort-select" class="h-11 pl-3 pr-8 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface text-xs font-semibold appearance-none cursor-pointer focus:outline-none shadow-xs border border-border-subtle transition-all">
+              <option value="newest">Newest first</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">unfold_more</span>
+          </div>
+        </div>
+
+        <!-- Category Carousel Tabs -->
+        <div id="explore-category-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+          <button type="button" class="exp-cat active flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary text-on-primary text-xs font-bold shrink-0 shadow-xs" data-cat="all">
+            <span class="material-symbols-outlined text-sm">apps</span>
+            <span>All</span>
+          </button>
+          <button type="button" class="exp-cat flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant text-xs font-bold shrink-0 hover:bg-surface-container" data-cat="Electronics">
+            <span class="material-symbols-outlined text-sm">devices</span>
+            <span>Electronics</span>
+          </button>
+          <button type="button" class="exp-cat flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant text-xs font-bold shrink-0 hover:bg-surface-container" data-cat="Books">
+            <span class="material-symbols-outlined text-sm">menu_book</span>
+            <span>Books</span>
+          </button>
+          <button type="button" class="exp-cat flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant text-xs font-bold shrink-0 hover:bg-surface-container" data-cat="Dorm Comfort">
+            <span class="material-symbols-outlined text-sm">chair</span>
+            <span>Furniture & Dorm</span>
+          </button>
+          <button type="button" class="exp-cat flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant text-xs font-bold shrink-0 hover:bg-surface-container" data-cat="Bikes & Wheels">
+            <span class="material-symbols-outlined text-sm">pedal_bike</span>
+            <span>Bikes</span>
+          </button>
+          <button type="button" class="exp-cat flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant text-xs font-bold shrink-0 hover:bg-surface-container" data-cat="Services">
+            <span class="material-symbols-outlined text-sm">handyman</span>
+            <span>Services</span>
+          </button>
+        </div>
+
+        <!-- Active Filter Badges Ribbon (rendered dynamically from filter state) -->
+        <div id="active-filters-bar" class="flex flex-wrap items-center gap-1.5 pt-0.5"></div>
+      </div>
+
+      <!-- Campus Live Deal Banner -->
+      <div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary to-primary-container p-4 text-on-primary shadow-sm flex items-center justify-between">
+        <div class="space-y-1 max-w-[70%]">
+          <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-wider">
+            <span>⚡ TODAY'S CAMPUS DROP</span>
+          </div>
+          <h3 class="text-base font-extrabold text-on-primary">Midterm Season Tech & Textbook Deals</h3>
+          <p class="text-xs text-on-primary-container">Up to 70% off bookstore prices with safe campus quad handovers.</p>
+        </div>
+        <button type="button" class="h-9 px-3 rounded-lg bg-surface-container-lowest text-primary text-xs font-bold hover:scale-105 active:scale-95 transition-transform shadow-xs" onclick="navigateTo('create')">
+          List Yours
+        </button>
+      </div>
+
+      <!-- Explore Grid -->
+      <div id="explore-listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-1">
+        <!-- Injected via app.js -->
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 3: LISTING DETAIL (#view-detail)
+         ------------------------------------------------------------------ -->
+    <section id="view-detail" class="view-panel max-w-4xl mx-auto w-full px-4 py-3 space-y-4">
+      <!-- Back Navigation Bar -->
+      <div class="flex items-center justify-between">
+        <button type="button" class="flex items-center gap-1 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors py-1" onclick="history.back() || navigateTo('home')">
+          <span class="material-symbols-outlined text-xl">arrow_back</span>
+          <span>Back</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <button id="detail-share-btn" type="button" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high active:scale-95 transition-all shadow-xs" onclick="shareCurrentListing()">
+            <span class="material-symbols-outlined text-lg">share</span>
+          </button>
+          <button type="button" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high active:scale-95 transition-all shadow-xs" onclick="navigateTo('dispute-report')">
+            <span class="material-symbols-outlined text-lg">report</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trust Badges Bar -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold shadow-xs">
+          <span class="material-symbols-outlined text-sm">school</span>
+          <span>.EDU VERIFIED LISTING</span>
+        </span>
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold">
+          <span class="material-symbols-outlined text-xs text-tertiary">bolt</span>
+          <span>Fast Responder</span>
+        </span>
+        <span id="detail-condition-tag" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-electric-indigo-light text-primary text-xs font-semibold">
+          <span>Inspected • Excellent</span>
+        </span>
+      </div>
+
+      <!-- Interactive Image Carousel Gallery -->
+      <div class="relative w-full aspect-[4/3] max-h-[460px] rounded-2xl overflow-hidden bg-surface-container-low shadow-sm border border-border-subtle">
+        <div id="detail-carousel-track" class="flex w-full h-full transition-transform duration-300 ease-out">
+          <!-- Slide images injected via app.js -->
+        </div>
+
+        <!-- Carousel Indicators -->
+        <div class="absolute top-3 right-3 z-10">
+          <span id="detail-carousel-indicator" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-inverse-surface/85 backdrop-blur-md text-inverse-on-surface text-xs font-semibold">
+            <span class="material-symbols-outlined text-xs">photo_library</span>
+            <span>1 / 3</span>
+          </span>
+        </div>
+
+        <!-- Arrows -->
+        <button id="carousel-prev-btn" type="button" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md active:scale-90 transition-transform">
+          <span class="material-symbols-outlined text-xl">chevron_left</span>
+        </button>
+        <button id="carousel-next-btn" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md active:scale-90 transition-transform">
+          <span class="material-symbols-outlined text-xl">chevron_right</span>
+        </button>
+
+        <!-- Dots -->
+        <div id="detail-carousel-dots" class="absolute bottom-3 inset-x-0 flex justify-center items-center gap-1.5 z-10">
+          <!-- Dots injected -->
+        </div>
+      </div>
+
+      <!-- Primary Info & Price Card -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-border-subtle space-y-3">
+        <div class="flex items-center justify-between text-xs text-on-surface-variant">
+          <div class="flex items-center gap-2">
+            <span id="detail-category-badge" class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-bold uppercase tracking-wide">Electronics</span>
+            <span id="detail-qty-text">• 1 available</span>
+          </div>
+          <span id="detail-time-ago" class="flex items-center gap-1 text-outline">
+            <span class="material-symbols-outlined text-xs">schedule</span>
+            <span>2 hours ago</span>
+          </span>
+        </div>
+
+        <h1 id="detail-title" class="text-xl sm:text-2xl font-extrabold text-on-surface leading-tight">
+          Sony WH-1000XM4 Wireless Noise-Canceling Headphones
+        </h1>
+
+        <!-- Price Block -->
+        <div class="flex items-baseline justify-between bg-surface-container-low/70 rounded-xl p-3.5 border border-border-subtle/50">
+          <div>
+            <div class="flex items-baseline gap-2">
+              <span id="detail-price" class="text-2xl sm:text-3xl font-extrabold text-primary">$140</span>
+              <span id="detail-price-unit" class="text-xs font-semibold text-on-surface-variant">/item</span>
+              <span id="detail-orig-price" class="text-xs text-outline line-through hidden">$249 retail</span>
+            </div>
+            <p id="detail-savings-text" class="text-xs text-campus-emerald-dark font-bold mt-0.5">Save $109 vs buying new</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-campus-emerald-light text-campus-emerald-dark text-xs font-bold">
+            0% Fees • Cash/Venmo
+          </span>
+        </div>
+
+        <!-- Safe Campus Pickup Location -->
+        <div class="bg-surface-container-low/40 rounded-xl p-3 flex items-start gap-3 border border-border-subtle/40">
+          <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+            <span class="material-symbols-outlined text-lg">pin_drop</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-bold text-on-surface">Campus Meetup & Handover Point</p>
+            <p id="detail-location" class="text-sm font-semibold text-primary truncate">Moffitt Library 3rd Floor Safe Zone</p>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">High-foot-traffic verified campus exchange zone. Inspected before payment.</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-1.5 pt-1">
+          <h3 class="text-xs font-bold text-outline uppercase tracking-wider">Item Details</h3>
+          <p id="detail-desc" class="text-sm text-on-surface-variant leading-relaxed">
+            Matte black wireless noise-canceling headphones in pristine condition. Includes hard case, USB-C cable and 3.5mm jack.
+          </p>
+        </div>
+      </div>
+
+      <!-- Seller Profile Card -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-border-subtle flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="relative">
+            <img id="detail-seller-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuQi1ZABRLQVM-9Kh1xfE_1Szwlnkc3DE2_uSWVTbOMMVdLRERvcjL_FQ3k7piRckukcrPtmElsHTSN1g3fZGqoyYIqEYdhuRh65bqx5rRx3_jWuXiIiVD3tA8bnzWgNI8akdqNhtwYfXHbX-Vi6Q2t8eTuRFyeODKVIHOw_Yu6qc988VVtiwUyBAFQ6DRgi3dVqenhcTyLGTZN4TG4xXonu5UBxg5oqsj4Rv2Fs4" alt="Seller" class="w-12 h-12 rounded-full object-cover shadow-xs ring-2 ring-primary/20"/>
+            <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-[10px]">✓</span>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span id="detail-seller-name" class="font-bold text-sm text-on-surface truncate">Alex Chen</span>
+              <span class="px-1.5 py-0.2 rounded-full bg-campus-emerald-light text-campus-emerald-dark text-[10px] font-bold">.edu</span>
+            </div>
+            <p id="detail-seller-campus" class="text-xs text-on-surface-variant truncate">UC Berkeley '25 • Senior</p>
+            <div class="flex items-center gap-2 text-xs font-semibold mt-0.5">
+              <span id="detail-seller-rating" class="text-tertiary flex items-center gap-0.5">★ 4.9</span>
+              <span class="text-outline">•</span>
+              <span id="detail-seller-deals" class="text-on-surface-variant">19 completed sales</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="px-3 py-1.5 rounded-xl bg-surface-container text-primary font-bold text-xs hover:bg-surface-container-high transition-colors" onclick="openChatWithContext()">
+          Chat
+        </button>
+      </div>
+
+      <!-- Sticky Action Dock -->
+      <div class="sticky bottom-20 z-40 bg-surface-container-lowest/95 backdrop-blur-xl rounded-2xl p-3 shadow-lg border border-border-subtle flex items-center gap-2">
+        <button id="detail-heart-btn" type="button" class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-outline hover:text-error active:scale-95 transition-all flex-shrink-0" onclick="toggleDetailSave()">
+          <span class="material-symbols-outlined text-2xl">favorite</span>
+        </button>
+        <button type="button" class="flex-1 h-12 rounded-xl bg-surface-container text-primary font-bold text-sm flex items-center justify-center gap-1.5 hover:bg-surface-container-high active:scale-95 transition-all" onclick="openMakeOfferModal()">
+          <span class="material-symbols-outlined text-lg">local_offer</span>
+          <span>Make Offer</span>
+        </button>
+        <button type="button" class="flex-1 h-12 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center justify-center gap-1.5 shadow-md hover:bg-primary active:scale-95 transition-all" onclick="lockDealHandover()">
+          <span class="material-symbols-outlined text-lg">handshake</span>
+          <span>Lock Deal</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 4: CREATE / SELL LISTING (#view-create)
+         ------------------------------------------------------------------ -->
+    <section id="view-create" class="view-panel max-w-2xl mx-auto w-full px-4 py-3 space-y-4">
+      <!-- Progress Banner -->
+      <div class="bg-surface-container rounded-2xl p-4 shadow-xs border border-border-subtle space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary text-on-primary text-xs font-bold uppercase tracking-wide">
+            Step 1 of 2
+          </span>
+          <span class="text-xs text-on-surface-variant font-bold">Details & Pricing</span>
+        </div>
+        <div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+          <div class="bg-primary h-full rounded-full w-1/2"></div>
+        </div>
+        <p class="text-xs text-on-surface-variant">
+          Tip: Verified student listings with accurate photos sell 3× faster on campus!
+        </p>
+      </div>
+
+      <!-- Live Marketplace Preview Accordion -->
+      <details class="group bg-surface-container-lowest rounded-2xl shadow-xs border border-border-subtle overflow-hidden" open>
+        <summary class="list-none flex items-center justify-between p-4 cursor-pointer select-none">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-xl filled">visibility</span>
+            <span class="text-sm font-bold text-on-surface">Live Marketplace Preview</span>
+          </div>
+          <span class="material-symbols-outlined text-outline group-open:rotate-180 transition-transform">expand_more</span>
+        </summary>
+        <div class="px-4 pb-4">
+          <div class="bg-surface-container-low rounded-xl p-3 flex gap-3 shadow-xs border border-border-subtle/50">
+            <div class="relative w-24 h-24 rounded-lg overflow-hidden bg-surface-container-high flex-shrink-0 flex items-center justify-center">
+              <span id="form-live-preview-placeholder" class="material-symbols-outlined text-3xl text-outline">add_photo_alternate</span>
+              <img id="form-live-preview-img" alt="Preview" class="w-full h-full object-cover hidden absolute inset-0"/>
+              <span class="absolute top-1 left-1 px-1.5 py-0.2 rounded bg-campus-emerald-light text-campus-emerald-dark text-[10px] font-bold">.edu</span>
+            </div>
+            <div class="flex flex-col justify-between min-w-0 flex-1">
+              <div>
+                <div class="flex items-center justify-between text-[11px]">
+                  <span id="form-live-preview-cat" class="font-bold uppercase text-primary">Electronics</span>
+                  <span class="text-outline">Just now</span>
+                </div>
+                <h4 id="form-live-preview-title" class="font-bold text-sm text-on-surface truncate mt-0.5">TI-84 Plus CE Graphing Calculator</h4>
+                <p id="form-live-preview-loc" class="text-xs text-on-surface-variant truncate flex items-center gap-1 mt-0.5">
+                  <span class="material-symbols-outlined text-xs text-primary">pin_drop</span>
+                  <span id="form-live-preview-loc-text">Campus Library Main Entrance</span>
+                </p>
+              </div>
+              <div class="flex items-baseline justify-between mt-1">
+                <span id="form-live-preview-price" class="text-lg font-extrabold text-primary">$65</span>
+                <span id="form-live-preview-qty" class="bg-surface-container px-2 py-0.5 rounded-full text-[10px] font-semibold text-on-surface">Qty: 1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Listing Creator Form -->
+      <form id="create-listing-form" class="space-y-4" onsubmit="handleCreateListingSubmit(event)">
+        <!-- Photo Upload Dropzone -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-bold text-on-surface">Item Photos <span class="text-primary text-xs font-normal">(up to 5)</span></label>
+            <span id="photo-count-badge" class="text-xs text-on-surface-variant font-semibold">0 / 5 added</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2" id="photo-slots-grid">
+            <!-- Rendered dynamically by app.js (up to 5 photos) -->
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">Listing Title *</label>
+          <input id="create-title" type="text" required minlength="3" maxlength="140" placeholder="e.g. Calculus 9th Ed, Sony WH-1000XM4..." class="w-full h-12 px-4 rounded-xl bg-surface-container-lowest border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" oninput="updateFormPreview()"/>
+        </div>
+
+        <!-- Category & Price 2-Col -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-on-surface">Category *</label>
+            <select id="create-category" class="w-full h-12 px-3 rounded-xl bg-surface-container-lowest border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" onchange="updateFormPreview()">
+              <option value="Electronics">Electronics & Audio</option>
+              <option value="Books">Notes & Books</option>
+              <option value="Dorm Comfort">Dorm Comfort & Furniture</option>
+              <option value="Bikes & Wheels">Bikes & Wheels</option>
+              <option value="Services">Services & Tutoring</option>
+              <option value="Laundry">Laundry Service</option>
+              <option value="Food">Food & Late Night</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-on-surface">Asking Price ($) *</label>
+            <div class="relative flex items-center">
+              <span class="absolute left-3 text-sm font-bold text-outline">$</span>
+              <input id="create-price" type="number" step="0.5" required min="1" max="10000" placeholder="40.00" class="w-full h-12 pl-7 pr-4 rounded-xl bg-surface-container-lowest border border-border-subtle text-sm text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" oninput="updateFormPreview()"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pickup Location & Quantity -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2 space-y-1">
+            <label class="block text-xs font-bold text-on-surface">Campus Pickup / Handover Location *</label>
+            <input id="create-location" type="text" required minlength="2" maxlength="180" placeholder="e.g. Moffitt Library, Student Union, Unit 1..." class="w-full h-12 px-4 rounded-xl bg-surface-container-lowest border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" oninput="updateFormPreview()"/>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-on-surface">Quantity</label>
+            <input id="create-quantity" type="number" min="1" max="100" value="1" class="w-full h-12 px-3 rounded-xl bg-surface-container-lowest border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" oninput="updateFormPreview()"/>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">Detailed Description *</label>
+          <textarea id="create-description" rows="3" required minlength="5" maxlength="5000" placeholder="Mention item condition, included cables/accessories, reason for selling..." class="w-full p-3 rounded-xl bg-surface-container-lowest border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"></textarea>
+        </div>
+
+        <!-- Verified Students Only Toggle -->
+        <div class="bg-surface-container-low rounded-xl p-3 flex items-center justify-between border border-border-subtle/50">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-secondary text-xl filled">verified</span>
+            <div>
+              <p class="text-xs font-bold text-on-surface">Verified Students Only</p>
+              <p class="text-[11px] text-on-surface-variant">Only allow active @.edu campus students to send offers.</p>
+            </div>
+          </div>
+          <input type="checkbox" checked class="w-5 h-5 rounded text-primary focus:ring-primary accent-primary cursor-pointer"/>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-2 flex items-center gap-3">
+          <button type="button" class="h-12 px-5 rounded-xl bg-surface-container text-on-surface-variant font-bold text-sm hover:bg-surface-container-high transition-colors" onclick="history.back() || navigateTo('home')">
+            Cancel
+          </button>
+          <button id="create-submit-btn" type="submit" class="flex-1 h-12 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:bg-primary active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-lg">publish</span>
+            <span>Publish Listing to Campus</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 5: STUDENT AUTH (SIGN IN & REGISTER) (#view-auth)
+         ------------------------------------------------------------------ -->
+    <section id="view-auth" class="view-panel max-w-md mx-auto w-full px-4 py-3 space-y-4">
+      <!-- Ambient Visual Header -->
+      <div class="bg-gradient-to-r from-primary/10 via-surface-container to-secondary-container/20 rounded-2xl p-5 shadow-xs border border-border-subtle flex items-center justify-between gap-3">
         <div>
-          <small>YOUR CAMPUS</small>
-          <strong>SRM University</strong>
-          <span>Kattankulathur · 1.2 km</span>
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-campus-emerald-light text-campus-emerald-dark text-[11px] font-bold">
+            <span class="material-symbols-outlined text-xs filled">school</span>
+            <span>VERIFIED CAMPUS ACCESS</span>
+          </span>
+          <h2 class="text-xl font-extrabold text-on-surface mt-1">Campus Hustle</h2>
+          <p class="text-xs text-on-surface-variant">Your campus. Your marketplace.</p>
         </div>
-        <button class="tiny-icon">⌄</button>
+        <div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm text-primary">
+          <span class="material-symbols-outlined text-2xl filled">local_mall</span>
+        </div>
       </div>
 
-      <div class="sidebar-bottom">
-        <button class="nav-item" data-page="profile"><span>◉</span> Profile</button>
-        <button class="nav-item" data-page="settings"><span>⚙</span> Settings</button>
+      <!-- Segmented Tab Switcher -->
+      <div class="grid grid-cols-2 p-1 bg-surface-container rounded-xl text-center text-xs font-bold">
+        <button id="auth-tab-signin" type="button" class="py-2.5 px-3 rounded-lg transition-all duration-200 bg-surface-container-lowest text-primary shadow-xs flex items-center justify-center gap-1.5" onclick="switchAuthTab('signin')">
+          <span class="material-symbols-outlined text-base">login</span>
+          <span>Sign In</span>
+        </button>
+        <button id="auth-tab-register" type="button" class="py-2.5 px-3 rounded-lg transition-all duration-200 text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5" onclick="switchAuthTab('register')">
+          <span class="material-symbols-outlined text-base">person_add</span>
+          <span>Create Account</span>
+        </button>
       </div>
-    </aside>
 
-    <main class="main">
-      <header class="topbar">
-        <button class="mobile-menu" id="mobileMenu">☰</button>
-        <div class="mobile-brand">Campus Hustle</div>
-        <div class="search-wrap">
-          <span>⌕</span>
-          <input id="searchInput" placeholder="Search laundry, notes, food, rentals..." />
-          <kbd>⌘ K</kbd>
-        </div>
-        <div class="top-actions">
-          <button class="icon-button" id="notificationBtn" title="Notifications">♢<i></i></button>
-          <button class="sell-button" data-page="create">+ Sell something</button>
-          <button class="avatar-button" data-page="profile">SK</button>
-        </div>
-      </header>
-
-      <section id="page-home" class="page active-page">
-        <div class="hero">
-          <div class="hero-copy">
-            <div class="eyebrow"><span class="pulse"></span> LIVE ON CAMPUS</div>
-            <h1>Stop asking<br><em>“still available?”</em></h1>
-            <p>Buy, sell, bargain and get things done around campus — without digging through 40 WhatsApp groups.</p>
-            <div class="hero-actions">
-              <button class="primary-btn" data-page="create">List an item <span>→</span></button>
-              <button class="ghost-btn" onclick="scrollToMarket()">Explore marketplace</button>
-            </div>
-            <div class="trust-row">
-              <span>✓ Campus verified</span>
-              <span>✓ In-app chat</span>
-              <span>✓ No hidden fees</span>
-            </div>
+      <!-- Sign In Form -->
+      <div id="auth-signin-box" class="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-border-subtle space-y-4">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">Campus Email</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">mail</span>
+            <input id="signin-email" type="email" required placeholder="you@berkeley.edu" class="w-full h-12 pl-10 pr-4 rounded-xl bg-surface border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
           </div>
-          <div class="hero-art">
-            <div class="orbit orbit-a"></div>
-            <div class="orbit orbit-b"></div>
-            <div class="float-card fc-top"><span class="mini-icon purple">♧</span><div><b>Fresh laundry</b><small>₹70 · 2h ago</small></div><span class="status-dot"></span></div>
-            <div class="float-card fc-left"><span class="mini-icon orange">⌂</span><div><b>Roommate needed</b><small>₹5,500 / month</small></div></div>
-            <div class="phone-card">
-              <div class="phone-notch"></div>
-              <div class="phone-header"><b>Today on campus</b><span>•••</span></div>
-              <div class="mini-listing">
-                <div class="mini-photo laundry-photo">🧺</div>
-                <div><strong>Wash & Fold</strong><small>Pickup at hostel gate</small><b>₹70 <del>₹90</del></b></div>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-on-surface">Password</label>
+            <span class="text-[11px] text-primary hover:underline cursor-pointer" onclick="showToast('Password reset link sent to student email')">Forgot password?</span>
+          </div>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">lock</span>
+            <input id="signin-password" type="password" required placeholder="••••••••••••" class="w-full h-12 pl-10 pr-4 rounded-xl bg-surface border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+          </div>
+        </div>
+
+        <button id="signin-submit-btn" type="button" class="w-full h-12 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:bg-primary active:scale-95 transition-all" onclick="handleSignInSubmit()">
+          <span>Sign In to Campus Hustle</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </button>
+
+        <div class="pt-1 text-center">
+          <button type="button" class="text-xs text-secondary font-bold hover:underline" onclick="quickFillDemoStudent()">
+            ⚡ 1-Click Fill Verified Student Credentials
+          </button>
+        </div>
+      </div>
+
+      <!-- Register Form (Hidden by default) -->
+      <div id="auth-register-box" class="hidden bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-border-subtle space-y-3.5">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">Full Student Name</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">badge</span>
+            <input id="reg-name" type="text" required placeholder="Alex Rivera" class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-on-surface">Campus Email</label>
+            <span class="text-[10px] text-outline">.edu domain required</span>
+          </div>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">mail</span>
+            <input id="reg-email" type="email" required placeholder="alex@berkeley.edu" class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-on-surface">Password</label>
+            <span class="text-[10px] text-outline">Min 12 characters (FastAPI rule)</span>
+          </div>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-outline text-lg pointer-events-none">lock</span>
+            <input id="reg-password" type="password" required minlength="12" placeholder="At least 12 characters" class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">University / Campus</label>
+          <select id="reg-campus" class="w-full h-11 px-3 rounded-xl bg-surface border border-border-subtle text-sm text-on-surface focus:outline-none">
+            <option value="UC Berkeley">University of California, Berkeley (Cal)</option>
+            <option value="Stanford">Stanford University</option>
+            <option value="UCLA">University of California, Los Angeles</option>
+            <option value="UT Austin">University of Texas at Austin</option>
+            <option value="NYU">New York University</option>
+            <option value="Other">Other Accredited Institution (.edu)</option>
+          </select>
+        </div>
+
+        <button id="register-submit-btn" type="button" class="w-full h-12 rounded-xl bg-secondary text-on-secondary font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:bg-secondary-fixed-variant active:scale-95 transition-all mt-2" onclick="handleRegisterSubmit()">
+          <span>Create Student Account</span>
+          <span class="material-symbols-outlined text-base">check</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 6: STUDENT PROFILE & SETTINGS (#view-profile)
+         ------------------------------------------------------------------ -->
+    <section id="view-profile" class="view-panel max-w-4xl mx-auto w-full px-4 md:px-8 py-3 space-y-4">
+      <!-- Profile Cover & Student Header -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-border-subtle relative overflow-hidden">
+        <div class="flex items-center justify-between pb-3">
+          <div class="flex items-center gap-3.5">
+            <div class="relative">
+              <img id="profile-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuQi1ZABRLQVM-9Kh1xfE_1Szwlnkc3DE2_uSWVTbOMMVdLRERvcjL_FQ3k7piRckukcrPtmElsHTSN1g3fZGqoyYIqEYdhuRh65bqx5rRx3_jWuXiIiVD3tA8bnzWgNI8akdqNhtwYfXHbX-Vi6Q2t8eTuRFyeODKVIHOw_Yu6qc988VVtiwUyBAFQ6DRgi3dVqenhcTyLGTZN4TG4xXonu5UBxg5oqsj4Rv2Fs4" alt="Student Profile" class="w-16 h-16 rounded-full object-cover shadow-sm ring-2 ring-primary/20"/>
+              <div class="absolute -bottom-1 -right-1 bg-secondary text-on-secondary rounded-full p-0.5 shadow-xs flex items-center justify-center">
+                <span class="material-symbols-outlined text-xs filled">verified</span>
               </div>
-              <div class="mini-listing">
-                <div class="mini-photo food-photo">🥪</div>
-                <div><strong>Midnight sandwiches</strong><small>Block B · 11 PM</small><b>₹45</b></div>
-              </div>
-              <div class="mini-listing">
-                <div class="mini-photo notes-photo">📚</div>
-                <div><strong>DBMS notes</strong><small>Semester 5 · PDF + print</small><b>₹30</b></div>
-              </div>
-              <div class="phone-tab"><span>⌂</span><span>♡</span><span class="plus-tab">+</span><span>◌</span><span>◉</span></div>
             </div>
-            <div class="verified-badge">✓ <span>Verified campus sellers</span></div>
-          </div>
-        </div>
-
-        <div id="market" class="content-section">
-          <div class="section-head">
-            <div><span class="section-kicker">DISCOVER</span><h2>What do you need today?</h2></div>
-            <button class="text-btn">View all categories →</button>
-          </div>
-          <div class="category-grid">
-            <button class="category active"><span>🧺</span><b>Laundry</b><small>24 listings</small></button>
-            <button class="category"><span>🍜</span><b>Food</b><small>18 listings</small></button>
-            <button class="category"><span>📚</span><b>Study stuff</b><small>42 listings</small></button>
-            <button class="category"><span>🏠</span><b>Rentals</b><small>9 listings</small></button>
-            <button class="category"><span>🎧</span><b>Electronics</b><small>16 listings</small></button>
-            <button class="category"><span>✨</span><b>Services</b><small>31 listings</small></button>
-          </div>
-        </div>
-
-        <div class="content-section">
-          <div class="section-head">
-            <div><span class="section-kicker">NEAR YOU</span><h2>Fresh around campus</h2></div>
-            <div class="filter-pills"><button class="filter active">All</button><button class="filter">Under ₹500</button><button class="filter">New today</button></div>
-          </div>
-          <div id="listingGrid" class="listing-grid"></div>
-        </div>
-
-        <div class="trust-banner">
-          <div class="shield">✓</div>
-          <div><strong>Built for student-to-student trust.</strong><p>Campus email verification, seller ratings, transparent prices and a safe in-app chat.</p></div>
-          <button class="text-btn">How trust works →</button>
-        </div>
-      </section>
-
-      <section id="page-saved" class="page">
-        <div class="page-heading"><div><span class="section-kicker">YOUR SHORTLIST</span><h1>Saved items</h1><p>Keep the things you might want later in one place.</p></div></div>
-        <div id="savedGrid" class="listing-grid"></div>
-      </section>
-
-      <section id="page-messages" class="page">
-        <div class="page-heading"><div><span class="section-kicker">CONVERSATIONS</span><h1>Messages</h1><p>Bargain, ask questions, agree on a pickup.</p></div><button class="secondary-btn">+ New message</button></div>
-        <div class="messages-layout">
-          <div class="conversation-list" id="conversationList"></div>
-          <div class="chat-panel">
-            <div class="chat-head"><div class="seller-avatar avatar-purple">AM</div><div><strong>Ananya Mehta</strong><span>● Online · Verified seller</span></div><button>⋯</button></div>
-            <div class="chat-context"><div class="tiny-product laundry-photo">🧺</div><div><small>ABOUT THIS LISTING</small><strong>Wash & Fold · ₹70 / kg</strong></div><button>View listing →</button></div>
-            <div class="chat-body" id="chatBody">
-              <div class="chat-date">TODAY</div>
-              <div class="bubble other">Hey! I can pick up 4 kg today. Can you do ₹55/kg?</div>
-              <div class="bubble me">For 4 kg, I can do ₹60/kg. Pickup from Block B gate?</div>
-              <div class="bubble other">Deal 🤝 I’ll be there around 6:30.</div>
-              <div class="deal-card"><div class="deal-check">✓</div><div><small>DEAL AGREED</small><strong>4 kg · ₹240 total</strong><span>Pickup today · Block B gate</span></div><button>Confirm</button></div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <h2 id="profile-name" class="font-extrabold text-lg text-on-surface">Alex Chen</h2>
+                <span id="profile-verified-badge" class="bg-campus-emerald-light text-campus-emerald-dark text-xs px-2 py-0.5 rounded-full font-bold flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-xs">school</span> .edu Verified
+                </span>
+              </div>
+              <p id="profile-campus" class="text-xs text-on-surface-variant">Senior • UC Berkeley '25 • Computer Science</p>
+              <p id="profile-email" class="text-[11px] text-outline font-mono mt-0.5">alex.chen@berkeley.edu</p>
             </div>
-            <div class="quick-replies"><button>Can you do ₹50?</button><button>Where's pickup?</button><button>Still available?</button></div>
-            <div class="chat-input"><button>＋</button><input id="chatInput" placeholder="Write a message..." /><button class="send" id="sendMessage">↑</button></div>
+          </div>
+
+          <div class="flex flex-col items-end gap-1">
+            <span class="bg-electric-indigo-light text-primary text-xs px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs filled">savings</span>
+              <span>0% Fees</span>
+            </span>
+            <button type="button" class="text-xs text-error font-semibold hover:underline mt-1" onclick="handleLogout()">
+              Sign Out
+            </button>
           </div>
         </div>
-      </section>
 
-      <section id="page-orders" class="page">
-        <div class="page-heading"><div><span class="section-kicker">YOUR ACTIVITY</span><h1>My deals</h1><p>Everything you've bought or sold on Campus Hustle.</p></div><div class="tabs"><button class="tab active">Buying</button><button class="tab">Selling</button></div></div>
-        <div class="deal-stats"><div><small>ACTIVE</small><strong>2</strong></div><div><small>COMPLETED</small><strong>8</strong></div><div><small>SAVED</small><strong>4</strong></div><div><small>YOU SAVED</small><strong>₹1,240</strong></div></div>
-        <div class="orders-list">
-          <div class="order-card"><div class="order-img laundry-photo">🧺</div><div class="order-main"><span class="tag green">CONFIRMED</span><h3>Wash & Fold · 4 kg</h3><p>Pickup today, 6:30 PM · Block B gate</p><strong>₹240</strong></div><button class="outline-btn">Open chat</button></div>
-          <div class="order-card"><div class="order-img notes-photo">📚</div><div class="order-main"><span class="tag gray">COMPLETED</span><h3>DBMS Complete Notes</h3><p>Delivered yesterday by Rahul S.</p><strong>₹30</strong></div><button class="outline-btn">Rate seller</button></div>
-        </div>
-      </section>
-
-      <section id="page-seller" class="page">
-        <div class="page-heading"><div><span class="section-kicker">SELLER STUDIO</span><h1>Make your hustle official.</h1><p>Manage listings, respond to buyers and see what is working.</p></div><button class="primary-btn" data-page="create">+ New listing</button></div>
-        <div class="seller-metrics"><div class="metric"><span>💰</span><small>THIS MONTH</small><strong>₹12,480</strong><em>↑ 18.4%</em></div><div class="metric"><span>👀</span><small>LISTING VIEWS</small><strong>2,841</strong><em>↑ 24.1%</em></div><div class="metric"><span>🤝</span><small>DEALS CLOSED</small><strong>46</strong><em>↑ 12.8%</em></div><div class="metric"><span>★</span><small>RATING</small><strong>4.9</strong><em>from 38 reviews</em></div></div>
-        <div class="studio-grid"><div class="panel chart-panel"><div class="panel-head"><div><small>SALES OVERVIEW</small><h3>Last 7 days</h3></div><select><option>Last 7 days</option></select></div><div class="chart"><div class="chart-grid"></div><svg viewBox="0 0 600 180" preserveAspectRatio="none"><path d="M0 150 C60 142,70 110,120 124 S190 120,230 90 S290 118,335 85 S390 105,430 60 S490 82,540 45 S575 50,600 20" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M0 150 C60 142,70 110,120 124 S190 120,230 90 S290 118,335 85 S390 105,430 60 S490 82,540 45 S575 50,600 20 V180 H0Z" fill="currentColor" opacity=".08"/></svg></div><div class="chart-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></div>
-          <div class="panel"><div class="panel-head"><div><small>ACTIVE LISTINGS</small><h3>Your items</h3></div><button class="text-btn">Manage all →</button></div><div class="mini-item"><div class="item-thumb laundry-photo">🧺</div><div><strong>Wash & Fold</strong><span>12 inquiries · 6 sold</span></div><b>₹70/kg</b></div><div class="mini-item"><div class="item-thumb food-photo">🥪</div><div><strong>Midnight Sandwiches</strong><span>8 inquiries · 14 sold</span></div><b>₹45</b></div><div class="mini-item"><div class="item-thumb notes-photo">📚</div><div><strong>DBMS Notes</strong><span>23 views · 4 sold</span></div><b>₹30</b></div></div></div>
-      </section>
-
-      <section id="page-create" class="page">
-        <div class="page-heading"><div><span class="section-kicker">SELL SOMETHING</span><h1>Create a listing</h1><p>Tell campus what you have. Keep it simple and honest.</p></div><div class="draft-status">● Draft saved</div></div>
-        <div class="create-layout">
-          <div class="form-panel">
-            <label>What are you offering?<input value="Wash & Fold Laundry Service" /></label>
-            <div class="two-col"><label>Category<select><option>Laundry</option><option>Food</option><option>Study stuff</option><option>Rentals</option><option>Electronics</option><option>Services</option></select></label><label>Price<input value="70" /><small>₹ per kg</small></label></div>
-            <label>Description<textarea>Fresh wash & fold service for hostel students. Pickup from Block B gate. Same-day delivery for orders before 5 PM.</textarea></label>
-            <label>Pickup / delivery point<input value="Block B Hostel Gate" /></label>
-            <div class="upload-box"><div class="upload-icon">↑</div><strong>Add photos</strong><span>Drag & drop or browse · Up to 6 images</span><button class="outline-btn">Choose files</button></div>
-            <div class="trust-check"><input type="checkbox" checked /><div><strong>I'm a verified campus seller</strong><span>Buyers see your verification badge on this listing.</span></div></div>
-            <div class="form-actions"><button class="ghost-btn" data-page="home">Cancel</button><button class="primary-btn" id="publishBtn">Publish listing →</button></div>
+        <!-- 4-Stat Metric Grid (values rendered dynamically by app.js) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+          <div class="bg-surface-container-low rounded-xl p-3 border border-border-subtle/40">
+            <span class="text-xs text-outline block">Total Earned</span>
+            <span id="profile-total-earned" class="text-xl font-extrabold text-primary">$0.00</span>
+            <span class="text-[10px] text-secondary font-bold block mt-0.5">100% Payout</span>
           </div>
-          <div class="preview-panel"><small>LIVE PREVIEW</small><div class="preview-card"><div class="preview-photo laundry-photo">🧺<span>♡</span></div><div class="preview-content"><div class="verified-line">✓ VERIFIED SELLER · 4.9 ★</div><h3>Wash & Fold Laundry Service</h3><p>Fresh wash & fold service for hostel students...</p><div class="preview-bottom"><strong>₹70<small>/ kg</small></strong><span>⌖ 0.4 km</span></div><button class="full-btn">Message seller</button></div></div><div class="tip-box"><span>💡</span><div><strong>Pro tip</strong><p>Listings with 3+ photos get about 2× more inquiries.</p></div></div></div>
+          <div class="bg-surface-container-low rounded-xl p-3 border border-border-subtle/40">
+            <span class="text-xs text-outline block">Deals Completed</span>
+            <span id="profile-deals-completed" class="text-xl font-extrabold text-on-surface">0</span>
+            <span class="text-[10px] text-secondary font-bold block mt-0.5">100% Fulfill Rate</span>
+          </div>
+          <div class="bg-surface-container-low rounded-xl p-3 border border-border-subtle/40">
+            <span class="text-xs text-outline block">Trust Rating</span>
+            <span id="profile-trust-rating" class="text-xl font-extrabold text-tertiary">4.9 ★</span>
+            <span class="text-[10px] text-outline font-semibold block mt-0.5">Honor Verified</span>
+          </div>
+          <div class="bg-surface-container-low rounded-xl p-3 border border-border-subtle/40">
+            <span class="text-xs text-outline block">Wishlist Saved</span>
+            <span id="profile-saved-count" class="text-xl font-extrabold text-on-surface">0</span>
+            <span class="text-[10px] text-primary font-semibold block mt-0.5 cursor-pointer hover:underline" onclick="navigateTo('explore')">Browse</span>
+          </div>
         </div>
-      </section>
+      </div>
 
-      <section id="page-profile" class="page">
-        <div class="profile-cover"><div class="profile-avatar">SK</div><div><span class="verified-line">✓ CAMPUS VERIFIED</span><h1>Shivam Kumar</h1><p>Computer Science · Year 3 · SRM University</p></div><button class="outline-btn">Edit profile</button></div>
-        <div class="profile-grid"><div class="panel"><small>ABOUT</small><h3>Campus seller & buyer</h3><p class="muted">Helping students get everyday campus essentials without the WhatsApp chaos.</p><div class="profile-info"><span>★ 4.9 rating</span><span>🤝 14 deals</span><span>♧ Member since 2026</span></div></div><div class="panel"><small>TRUST SCORE</small><div class="trust-score"><strong>98</strong><span>/ 100</span></div><div class="progress"><i></i></div><p class="muted">Great standing. Your profile is trusted by the campus community.</p></div></div>
-      </section>
+      <!-- Quick Action Navigation Hub -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <button type="button" class="bg-surface-container-lowest p-4 rounded-xl border border-border-subtle text-left hover:border-primary transition-all flex items-center justify-between group shadow-xs" onclick="navigateTo('seller')">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-electric-indigo-light text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl">storefront</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Seller Studio</p>
+              <p id="profile-seller-subtitle" class="text-xs text-on-surface-variant">$0 Milestone & Listings</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+        </button>
 
-      <section id="page-settings" class="page">
-        <div class="page-heading"><div><span class="section-kicker">PREFERENCES</span><h1>Settings</h1><p>Control your Campus Hustle experience.</p></div></div>
-        <div class="settings-list"><div><div><strong>Campus notifications</strong><span>New messages, deals and nearby listings.</span></div><button class="toggle on"></button></div><div><div><strong>Only show verified sellers</strong><span>Prioritize campus-verified people in Explore.</span></div><button class="toggle on"></button></div><div><div><strong>Show my online status</strong><span>Let buyers know when you are available to chat.</span></div><button class="toggle"></button></div><div><div><strong>Safety center</strong><span>Learn how to meet safely and report a problem.</span></div><button class="text-btn">Open →</button></div></div>
-      </section>
-    </main>
+        <button type="button" class="bg-surface-container-lowest p-4 rounded-xl border border-border-subtle text-left hover:border-primary transition-all flex items-center justify-between group shadow-xs" onclick="navigateTo('offers')">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-secondary-container/40 text-secondary flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl">local_offer</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Incoming Offers</p>
+              <p id="profile-offers-subtitle" class="text-xs text-on-surface-variant">0 Competing Student Offers</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+        </button>
+
+        <button type="button" class="bg-surface-container-lowest p-4 rounded-xl border border-border-subtle text-left hover:border-primary transition-all flex items-center justify-between group shadow-xs" onclick="navigateTo('receipt')">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-surface-container text-on-surface flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl">receipt_long</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Official Receipts</p>
+              <p class="text-xs text-on-surface-variant">PDF & CSV Tax Ledger</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+        </button>
+      </div>
+
+      <!-- Backend Connection Inspector Card -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-border-subtle space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-xl">cloud_sync</span>
+            <h3 class="font-bold text-sm text-on-surface">Backend & API Status</h3>
+          </div>
+          <button type="button" class="text-xs font-bold text-primary hover:underline" onclick="testBackendConnection()">
+            Ping API Now
+          </button>
+        </div>
+        <div class="bg-surface-container-low rounded-xl p-3 text-xs space-y-1 font-mono">
+          <div class="flex justify-between"><span class="text-outline">Backend URL:</span><span class="font-bold text-on-surface truncate">https://campus-cdti.onrender.com</span></div>
+          <div class="flex justify-between"><span class="text-outline">Health Check:</span><span id="profile-backend-status" class="text-secondary font-bold">200 OK • Online</span></div>
+          <div class="flex justify-between"><span class="text-outline">Auth Token:</span><span id="profile-token-status" class="text-primary font-bold">No session</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 7: SELLER DASHBOARD (#view-seller)
+         ------------------------------------------------------------------ -->
+    <section id="view-seller" class="view-panel max-w-5xl mx-auto w-full px-4 md:px-8 py-3 space-y-4">
+      <!-- Milestone Celebration Banner -->
+      <div id="milestone-banner" class="bg-gradient-to-r from-primary via-primary-container to-electric-indigo-dark rounded-2xl p-5 text-on-primary shadow-md relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-secondary-fixed/20 rounded-full blur-xl pointer-events-none"></div>
+        <div class="flex items-start justify-between gap-3 relative z-10">
+          <div class="flex items-center gap-2.5">
+            <span class="p-2 bg-surface-container-lowest/15 backdrop-blur-md rounded-xl text-secondary-fixed text-xl">
+              <span class="material-symbols-outlined text-xl filled">workspace_premium</span>
+            </span>
+            <div>
+              <span id="seller-milestone-level" class="text-xs text-secondary-fixed font-bold uppercase tracking-wider block">Level Unlocked</span>
+              <h2 id="seller-milestone-title" class="text-lg font-extrabold text-on-primary">Campus Legend ($500+ Club)</h2>
+            </div>
+          </div>
+        </div>
+        <p id="seller-milestone-text" class="text-xs text-on-primary-container mt-2 leading-relaxed max-w-xl">
+          Milestone reached: <strong class="text-on-primary">completed sales on campus!</strong> You unlocked priority explore placement.
+        </p>
+        <div class="flex items-center gap-2 mt-3 pt-1">
+          <button type="button" class="bg-surface-container-lowest text-primary text-xs font-bold px-3.5 py-1.5 rounded-full shadow-xs hover:scale-105 active:scale-95 transition-transform flex items-center gap-1" onclick="openPdfPreviewModal()">
+            <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+            <span>View PDF Statement</span>
+          </button>
+          <button type="button" class="bg-surface-container-lowest/20 hover:bg-surface-container-lowest/30 text-on-primary text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-md transition-colors flex items-center gap-1" onclick="openCsvExportModal()">
+            <span class="material-symbols-outlined text-sm">download</span>
+            <span>Export CSV Tax Ledger</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Seller Analytics 4-Stat Grid (rendered dynamically) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-border-subtle">
+          <span class="text-xs text-outline font-semibold block">Total Revenue</span>
+          <span id="seller-revenue" class="text-2xl font-extrabold text-primary">$0.00</span>
+          <span id="seller-revenue-delta" class="text-[11px] text-secondary font-bold flex items-center gap-0.5 mt-0.5">
+            <span class="material-symbols-outlined text-xs">trending_up</span> —
+          </span>
+        </div>
+        <div class="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-border-subtle">
+          <span class="text-xs text-outline font-semibold block">Sold Trades</span>
+          <span id="seller-sold-trades" class="text-2xl font-extrabold text-on-surface">0</span>
+          <span class="text-[11px] text-secondary font-bold flex items-center gap-0.5 mt-0.5">
+            <span class="material-symbols-outlined text-xs">check_circle</span> 100% fulfill
+          </span>
+        </div>
+        <div class="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-border-subtle">
+          <span class="text-xs text-outline font-semibold block">Active Listings</span>
+          <span id="seller-active-count" class="text-2xl font-extrabold text-on-surface">0</span>
+          <span class="text-[11px] text-primary font-bold block mt-0.5">Live on Campus</span>
+        </div>
+        <div class="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-border-subtle">
+          <span class="text-xs text-outline font-semibold block">Student Rating</span>
+          <span id="seller-rating" class="text-2xl font-extrabold text-tertiary">4.9 ★</span>
+          <span id="seller-reviews" class="text-[11px] text-outline font-semibold block mt-0.5">from 0 reviews</span>
+        </div>
+      </div>
+
+      <!-- 7-Day Sales Chart Card -->
+      <div class="bg-surface-container-lowest p-5 rounded-2xl shadow-xs border border-border-subtle space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs text-outline font-bold uppercase tracking-wider">SALES OVERVIEW</span>
+            <h3 class="text-base font-bold text-on-surface">Weekly Campus Trading Volume</h3>
+          </div>
+          <span id="seller-chart-trend" class="text-xs bg-campus-emerald-light text-campus-emerald-dark font-bold px-2.5 py-1 rounded-full">
+            +0% vs last week
+          </span>
+        </div>
+
+        <!-- SVG Trend Chart (path + labels rendered from real deal data) -->
+        <div class="w-full h-36 relative">
+          <svg id="seller-chart-svg" viewBox="0 0 600 160" preserveAspectRatio="none" class="w-full h-full text-primary">
+            <path id="seller-chart-area" d="" fill="currentColor" opacity="0.1"/>
+            <path id="seller-chart-line" d="" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div id="seller-chart-labels" class="flex justify-between text-xs text-outline font-semibold pt-1"></div>
+      </div>
+
+      <!-- Active Seller Listings Table / List -->
+      <div class="bg-surface-container-lowest p-5 rounded-2xl shadow-xs border border-border-subtle space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-bold text-on-surface">Your Active Items for Sale</h3>
+          <button type="button" class="text-xs font-bold text-primary hover:underline flex items-center gap-1" onclick="navigateTo('create')">
+            <span class="material-symbols-outlined text-sm">add</span>
+            <span>New Listing</span>
+          </button>
+        </div>
+
+        <div id="seller-listings-table" class="space-y-2.5">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 8: INCOMING TEXTBOOK OFFERS (#view-offers)
+         ------------------------------------------------------------------ -->
+    <section id="view-offers" class="view-panel max-w-2xl mx-auto w-full px-4 py-3 space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <h1 class="text-lg font-extrabold text-on-surface">Incoming Offers</h1>
+          <span id="offers-count-badge" class="px-2 py-0.5 rounded-full bg-primary text-on-primary text-xs font-bold">0 Active</span>
+        </div>
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-campus-emerald-light text-campus-emerald-dark text-xs font-bold">
+          <span class="material-symbols-outlined text-sm filled">gavel</span>
+          <span>Cal Honor Code Protected</span>
+        </span>
+      </div>
+
+      <!-- Pinned Listing Context Card (rendered from active listing context) -->
+      <div id="offers-pinned-listing" class="p-4 rounded-2xl bg-surface-container-lowest shadow-xs border border-border-subtle flex gap-3.5 items-center"></div>
+
+      <!-- Competing Offers (rendered dynamically) -->
+      <div id="offers-list" class="space-y-3"></div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 9: STUDENT CHAT & BARGAINING (#view-chat)
+         ------------------------------------------------------------------ -->
+    <section id="view-chat" class="view-panel max-w-2xl mx-auto w-full px-4 py-3 space-y-3">
+      <!-- Chat Head Card -->
+      <div class="bg-surface-container-lowest p-3 rounded-2xl shadow-xs border border-border-subtle flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="relative">
+            <div id="chat-peer-initials" class="w-10 h-10 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-sm">
+              SM
+            </div>
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-secondary rounded-full ring-2 ring-surface"></span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <p id="chat-peer-name" class="text-sm font-bold text-on-surface">Sarah Miller</p>
+              <span class="px-1.5 py-0.2 rounded-full bg-campus-emerald-light text-campus-emerald-dark text-[10px] font-bold">.edu</span>
+            </div>
+            <p id="chat-peer-campus" class="text-xs text-on-surface-variant">Cognitive Science '26 • Active Now</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button type="button" class="w-9 h-9 rounded-full hover:bg-surface-container flex items-center justify-center text-secondary" title="Verified Safe Zone">
+            <span class="material-symbols-outlined text-xl">verified_user</span>
+          </button>
+          <button type="button" class="w-9 h-9 rounded-full hover:bg-surface-container flex items-center justify-center text-outline" onclick="navigateTo('dispute-report')">
+            <span class="material-symbols-outlined text-xl">more_vert</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pinned Item Snapshot (bound to active listing context) -->
+      <div class="bg-surface-container-low p-2.5 rounded-xl flex items-center justify-between gap-3 border border-border-subtle/50">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <img id="chat-pinned-img" src="" alt="Item" class="w-10 h-12 rounded-lg object-cover flex-shrink-0 bg-surface-container"/>
+          <div class="min-w-0">
+            <p id="chat-pinned-title" class="text-xs font-bold text-on-surface truncate">No item selected</p>
+            <p class="text-xs text-primary font-extrabold"><span id="chat-pinned-price">$0.00</span> <span id="chat-pinned-orig" class="text-outline font-normal line-through text-[11px] hidden"></span></p>
+          </div>
+        </div>
+        <button type="button" class="h-8 px-3 rounded-lg bg-secondary text-on-secondary text-xs font-bold hover:bg-secondary-fixed-variant transition-colors" onclick="lockDealHandover()">
+          Confirm Deal
+        </button>
+      </div>
+
+      <!-- Chat Messages Body -->
+      <div id="chat-messages-container" class="space-y-3 min-h-[280px] max-h-[460px] overflow-y-auto p-1">
+        <!-- Sarah message -->
+        <div class="flex items-end gap-2 max-w-[85%] self-start">
+          <div class="w-7 h-7 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center flex-shrink-0">SM</div>
+          <div class="bg-surface-container-lowest p-3 rounded-2xl rounded-bl-sm text-sm text-on-surface shadow-xs border border-border-subtle">
+            Hi Alex! Is this textbook still available? I need it for Math 53 this semester!
+            <span class="block text-[10px] text-outline mt-1 text-right">1:15 PM</span>
+          </div>
+        </div>
+
+        <!-- Alex reply -->
+        <div class="flex items-end gap-2 max-w-[85%] ml-auto justify-end">
+          <div class="bg-primary text-on-primary p-3 rounded-2xl rounded-br-sm text-sm shadow-xs">
+            Hey Sarah! Yes, still got it. Pristine condition, zero highlighted pages.
+            <span class="block text-[10px] text-on-primary/70 mt-1 text-right">1:18 PM • Read</span>
+          </div>
+        </div>
+
+        <!-- Interactive Bargaining Card within Chat -->
+        <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-primary/20 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-primary flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">local_offer</span>
+              <span>Direct Student Offer</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold">
+              Agreed
+            </span>
+          </div>
+          <div class="flex items-baseline justify-between bg-surface-container-low p-2.5 rounded-xl">
+            <div>
+              <span class="text-[10px] text-outline block uppercase font-bold">Offered Amount</span>
+              <span class="text-lg font-extrabold text-primary">$40.00</span>
+            </div>
+            <button type="button" class="h-8 px-3 rounded-lg bg-primary-container text-on-primary text-xs font-bold hover:bg-primary transition-colors" onclick="lockDealHandover()">
+              Generate Handover PIN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Bargaining Chips -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+        <button type="button" class="px-3 py-1 rounded-full bg-surface-container text-xs text-on-surface hover:bg-surface-container-high transition-colors flex-shrink-0" onclick="sendQuickChatMessage('Can you do $35 for it?')">
+          Can you do $35?
+        </button>
+        <button type="button" class="px-3 py-1 rounded-full bg-surface-container text-xs text-on-surface hover:bg-surface-container-high transition-colors" onclick="sendQuickChatMessage('Meet today at Moffitt Library?')">
+          Meet at Moffitt Library?
+        </button>
+        <button type="button" class="px-3 py-1 rounded-full bg-surface-container text-xs text-on-surface hover:bg-surface-container-high transition-colors" onclick="sendQuickChatMessage('Deal! See you at 4pm.')">
+          Deal 🤝 See you at 4pm
+        </button>
+      </div>
+
+      <!-- Chat Input Field -->
+      <div class="flex items-center gap-2 pt-1">
+        <input id="chat-text-input" type="text" placeholder="Write a message or bargain..." class="flex-1 h-12 px-4 rounded-xl bg-surface-container-lowest border border-border-subtle text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" onkeydown="if(event.key==='Enter') sendChatMessage()"/>
+        <button type="button" class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container active:scale-95 transition-all shadow-xs" onclick="sendChatMessage()">
+          <span class="material-symbols-outlined text-xl">send</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 10: MEETUP HANDOVER PIN & QR CODE (#view-handover-pin)
+         ------------------------------------------------------------------ -->
+    <section id="view-handover-pin" class="view-panel max-w-md mx-auto w-full px-4 py-3 space-y-4">
+      <!-- Escrow Confirmed Alert -->
+      <div class="bg-campus-emerald-light rounded-2xl p-4 shadow-xs border border-secondary/20 flex items-start gap-3">
+        <div class="w-9 h-9 rounded-full bg-secondary text-on-secondary flex items-center justify-center flex-shrink-0 shadow-xs">
+          <span class="material-symbols-outlined text-xl filled">verified</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-sm text-campus-emerald-dark">Offer Accepted & Escrow Locked</span>
+            <span id="handover-tx-id" class="px-2 py-0.2 rounded-full bg-secondary text-on-secondary text-[10px] font-bold">#TX-0000-CAL</span>
+          </div>
+          <p class="text-xs text-campus-emerald-dark mt-0.5">
+            <span id="handover-buyer-name">Buyer</span> deposited <strong id="handover-amount" class="text-on-surface">$0.00</strong> into Campus Escrow. Funds release immediately upon entering this PIN.
+          </p>
+        </div>
+      </div>
+
+      <!-- Secure PIN Card -->
+      <div class="rounded-2xl bg-surface-container-lowest p-6 shadow-sm border border-border-subtle text-center space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-electric-indigo-light text-primary text-xs font-bold">
+            <span class="material-symbols-outlined text-sm">key</span>
+            <span>Handover Exchange Pass</span>
+          </span>
+          <span class="text-xs text-secondary font-bold bg-campus-emerald-light px-2.5 py-0.5 rounded-full flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            <span>Active (Expires in 2h 58m)</span>
+          </span>
+        </div>
+
+        <p class="text-xs text-on-surface-variant">Share this 4-digit code with the buyer in person at handover</p>
+        <h3 class="text-lg font-extrabold text-on-surface">Your Secure Handover PIN</h3>
+
+        <!-- Large 4-digit PIN Grid (rendered from active deal state) -->
+        <div id="handover-pin-grid" class="grid grid-cols-4 gap-2.5 w-full max-w-xs mx-auto py-2"></div>
+
+        <button type="button" class="text-xs text-primary font-bold hover:underline flex items-center justify-center gap-1 mx-auto" onclick="copyHandoverPin()">
+          <span class="material-symbols-outlined text-sm">content_copy</span>
+          <span id="handover-pin-copy">Copy PIN</span>
+        </button>
+
+        <!-- Generative SVG QR Code -->
+        <div class="bg-surface-container-low p-4 rounded-xl flex flex-col items-center max-w-xs mx-auto">
+          <div class="w-32 h-32 bg-surface-container-lowest p-2 rounded-lg shadow-xs flex items-center justify-center">
+            <svg class="w-full h-full text-on-surface" fill="currentColor" viewBox="0 0 100 100">
+              <path d="M0,0 h30 v30 h-30 z M6,6 v18 h18 v-18 z M10,10 h10 v10 h-10 z"></path>
+              <path d="M70,0 h30 v30 h-30 z M76,6 v18 h18 v-18 z M80,10 h10 v10 h-10 z"></path>
+              <path d="M0,70 h30 v30 h-30 z M6,76 v18 h18 v-18 z M10,80 h10 v10 h-10 z"></path>
+              <rect height="14" rx="1" width="6" x="36" y="8"></rect>
+              <rect height="6" rx="1" width="14" x="48" y="4"></rect>
+              <rect height="8" rx="1" width="8" x="52" y="16"></rect>
+              <rect height="6" rx="1" width="14" x="8" y="36"></rect>
+              <rect height="16" rx="1" width="8" x="26" y="38"></rect>
+              <rect class="text-primary" height="24" rx="2" width="24" x="38" y="38"></rect>
+            </svg>
+          </div>
+          <p class="text-[11px] text-outline mt-2">Or scan QR code at meetup</p>
+        </div>
+      </div>
+
+      <!-- Confirm Handover Button -->
+      <button type="button" class="w-full h-12 rounded-xl bg-secondary text-on-secondary font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:bg-secondary-fixed-variant active:scale-95 transition-all" onclick="openHandoverReviewModal()">
+        <span class="material-symbols-outlined text-lg">verified</span>
+        <span>Buyer Entered PIN? Confirm Handover</span>
+      </button>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 11: TRANSACTION RECEIPT (#view-receipt)
+         ------------------------------------------------------------------ -->
+    <section id="view-receipt" class="view-panel max-w-xl mx-auto w-full px-4 py-3 space-y-4">
+      <div id="printable-receipt-card" class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-border-subtle space-y-4">
+        <!-- Top Receipt Header -->
+        <div class="flex items-center justify-between border-b border-border-subtle pb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-primary text-on-primary font-bold flex items-center justify-center text-sm">CH</div>
+            <div>
+              <p class="font-extrabold text-sm text-on-surface">Campus Hustle Receipt</p>
+              <p id="receipt-tx-id" class="text-[10px] text-outline font-mono">#TX-0000-CAL</p>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-campus-emerald-light text-campus-emerald-dark text-xs font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs filled">check_circle</span>
+            <span>Settled & Verified</span>
+          </span>
+        </div>
+
+        <!-- Order Summary (bound to settled deal state) -->
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between py-1 border-b border-border-subtle/50">
+            <span class="text-outline">Item Purchased</span>
+            <span id="receipt-item" class="font-bold text-on-surface">—</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-border-subtle/50">
+            <span class="text-outline">Handover Location</span>
+            <span id="receipt-location" class="font-semibold text-on-surface">—</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-border-subtle/50">
+            <span class="text-outline">Buyer</span>
+            <span id="receipt-buyer" class="font-semibold text-on-surface">—</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-border-subtle/50">
+            <span class="text-outline">Seller</span>
+            <span id="receipt-seller" class="font-semibold text-on-surface">—</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-border-subtle/50">
+            <span class="text-outline">Agreed Price</span>
+            <span id="receipt-price" class="font-bold text-on-surface">$0.00</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-border-subtle/50">
+            <span class="text-outline">Student Marketplace Fee</span>
+            <span class="font-bold text-secondary">$0.00 (Free)</span>
+          </div>
+          <div class="flex justify-between pt-1 text-sm font-extrabold">
+            <span>Total Settled</span>
+            <span id="receipt-total" class="text-primary">$0.00</span>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-low p-3 rounded-xl text-center text-[11px] text-outline space-y-0.5">
+          <p>Protected under UC Berkeley Student Marketplace Policy.</p>
+          <p>Zero platform take rate. Peer-to-peer verified settlement.</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button type="button" class="flex-1 h-11 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary-container transition-colors flex items-center justify-center gap-1.5" onclick="openPdfPreviewModal()">
+          <span class="material-symbols-outlined text-base">picture_as_pdf</span>
+          <span>View / Print PDF</span>
+        </button>
+        <button type="button" class="flex-1 h-11 rounded-xl bg-surface-container text-on-surface font-bold text-xs hover:bg-surface-container-high transition-colors flex items-center justify-center gap-1.5" onclick="openCsvExportModal()">
+          <span class="material-symbols-outlined text-base">table_view</span>
+          <span>Download CSV</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         VIEW 12: DISPUTE REPORT & MEDIATION (#view-dispute-report)
+         ------------------------------------------------------------------ -->
+    <section id="view-dispute-report" class="view-panel max-w-lg mx-auto w-full px-4 py-3 space-y-4">
+      <div class="bg-surface-container-low rounded-2xl p-4 shadow-xs border border-border-subtle space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg">verified_user</span>
+            </div>
+            <h2 class="font-bold text-sm text-on-surface">Campus Dispute Mediation</h2>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-campus-emerald-light text-campus-emerald-dark text-[10px] font-bold">
+            Active Honor Code
+          </span>
+        </div>
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Protected under the <strong class="text-primary">UC Berkeley Student Marketplace Policy</strong>. Peer arbiters review cases within 2–4 hours.
+        </p>
+      </div>
+
+      <form class="space-y-3 bg-surface-container-lowest p-5 rounded-2xl border border-border-subtle shadow-xs" onsubmit="event.preventDefault(); submitDispute();">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">Issue Category *</label>
+          <select id="dispute-category" class="w-full h-11 px-3 rounded-xl bg-surface border border-border-subtle text-xs text-on-surface focus:outline-none">
+            <option>Item significantly not as described</option>
+            <option>Buyer / seller no-show at meetup point</option>
+            <option>Payment discrepancy / Venmo issue</option>
+            <option>Safety or harassment concern</option>
+          </select>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">Describe what happened *</label>
+          <textarea id="dispute-desc" rows="3" required placeholder="Provide facts, timestamps, and meetup details for the Student Honor Board..." class="w-full p-3 rounded-xl bg-surface border border-border-subtle text-xs text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20"></textarea>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-on-surface">Upload Proof / Photo Evidence</label>
+          <div class="p-4 rounded-xl border-2 border-dashed border-border-subtle text-center text-xs text-outline cursor-pointer hover:border-primary">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">cloud_upload</span>
+            <p>Click to attach screenshots or item photos</p>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full h-12 rounded-xl bg-error text-on-error font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 transition-opacity">
+          <span class="material-symbols-outlined text-base">gavel</span>
+          <span>Submit Case to Peer Arbiters</span>
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================
+       BOTTOM NAVIGATION BAR (Mobile & Desktop dock)
+       ====================================================================== -->
+  <nav class="fixed bottom-0 inset-x-0 z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-border-subtle shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
+    <div class="flex justify-around items-center h-16 px-2 max-w-lg mx-auto">
+      <!-- Home -->
+      <a href="#home" class="nav-tab active flex flex-col items-center justify-center w-14 h-14 text-primary font-bold transition-colors" data-view="home" onclick="navigateTo('home')">
+        <span class="material-symbols-outlined text-2xl">home</span>
+        <span class="text-[11px] mt-0.5">Home</span>
+      </a>
+
+      <!-- Explore -->
+      <a href="#explore" class="nav-tab flex flex-col items-center justify-center w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors" data-view="explore" onclick="navigateTo('explore')">
+        <span class="material-symbols-outlined text-2xl">explore</span>
+        <span class="text-[11px] mt-0.5">Explore</span>
+      </a>
+
+      <!-- Quick Sell Action Button (+) -->
+      <div class="flex items-center justify-center w-14 h-14">
+        <button type="button" aria-label="Sell Item" class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-container text-on-primary shadow-[0_4px_12px_rgba(79,70,229,0.35)] hover:scale-105 active:scale-95 transition-all" onclick="navigateTo('create')">
+          <span class="material-symbols-outlined text-2xl font-bold">add</span>
+        </button>
+      </div>
+
+      <!-- Messages / Chat -->
+      <a href="#chat" class="nav-tab relative flex flex-col items-center justify-center w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors" data-view="chat" onclick="navigateTo('chat')">
+        <div class="relative flex items-center justify-center">
+          <span class="material-symbols-outlined text-2xl">chat_bubble</span>
+          <span id="nav-chat-badge" class="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-campus-emerald-dark text-on-secondary text-[10px] font-bold flex items-center justify-center hidden">0</span>
+        </div>
+        <span class="text-[11px] mt-0.5">Messages</span>
+      </a>
+
+      <!-- Profile -->
+      <a href="#profile" class="nav-tab flex flex-col items-center justify-center w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors" data-view="profile" onclick="navigateTo('profile')">
+        <span class="material-symbols-outlined text-2xl">person</span>
+        <span class="text-[11px] mt-0.5">Profile</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       MODALS & DRAWERS
+       ====================================================================== -->
+
+  <!-- 1. Filter Drawer Modal (#modal-filters) -->
+  <div id="modal-filters" class="modal-overlay hidden fixed inset-0 z-50 bg-inverse-surface/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target===this) closeFiltersModal()">
+    <div class="modal-content drawer-bottom w-full max-w-lg bg-surface-container-lowest rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border border-border-subtle max-h-[85vh] overflow-y-auto space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">tune</span>
+          <h3 class="font-extrabold text-base text-on-surface">Filter Listings</h3>
+        </div>
+        <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline" onclick="closeFiltersModal()">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Max Price Slider -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-xs font-bold">
+          <span>Max Price</span>
+          <span id="filter-price-display" class="text-primary font-extrabold">$360</span>
+        </div>
+        <input id="filter-price-range" type="range" min="10" max="600" step="10" value="360" class="w-full accent-primary" oninput="document.getElementById('filter-price-display').textContent = '$' + this.value"/>
+      </div>
+
+      <!-- Verification Toggle -->
+      <label class="flex items-center justify-between bg-surface-container-low p-3 rounded-xl cursor-pointer">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-secondary text-lg filled">verified</span>
+          <span class="text-xs font-bold text-on-surface">.EDU Verified Students Only</span>
+        </div>
+        <input id="filter-verified-only" type="checkbox" checked class="w-5 h-5 rounded text-primary focus:ring-primary accent-primary"/>
+      </label>
+
+      <!-- Condition Pills -->
+      <div class="space-y-1.5">
+        <label class="block text-xs font-bold text-on-surface">Item Condition</label>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button type="button" class="condition-chip px-3 py-1.5 rounded-full bg-electric-indigo-light text-primary font-bold border border-primary/20">Brand New</button>
+          <button type="button" class="condition-chip px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-semibold">Like New</button>
+          <button type="button" class="condition-chip px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-semibold">Gently Used</button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 pt-2">
+        <button type="button" class="flex-1 h-11 rounded-xl bg-surface-container text-on-surface font-bold text-xs" onclick="resetFilters(); closeFiltersModal();">
+          Reset
+        </button>
+        <button type="button" class="flex-1 h-11 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-md" onclick="applyFilters(); closeFiltersModal();">
+          Apply Filters
+        </button>
+      </div>
+    </div>
   </div>
 
-  <div class="toast" id="toast"><span>✓</span><div><strong>Listing published!</strong><small>Your item is now visible to students nearby.</small></div></div>
-  <div class="modal hidden" id="notificationModal"><div class="modal-card"><div class="modal-head"><h3>Notifications</h3><button id="closeModal">×</button></div><div class="notification"><span class="notif-icon green-bg">✓</span><div><strong>Deal confirmed</strong><p>Your ₹240 laundry deal is confirmed.</p><small>2 min ago</small></div></div><div class="notification"><span class="notif-icon purple-bg">♡</span><div><strong>Someone saved your listing</strong><p>DBMS Complete Notes has a new save.</p><small>24 min ago</small></div></div><div class="notification"><span class="notif-icon orange-bg">₹</span><div><strong>New bargain</strong><p>Rahul offered ₹550 for your headphones.</p><small>1 hr ago</small></div></div></div></div>
+  <!-- 2. Handover Confirmation & Review Modal (#modal-review) -->
+  <div id="modal-review" class="modal-overlay hidden fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) closeReviewModal()">
+    <div class="modal-content w-full max-w-md bg-surface-container-lowest rounded-3xl p-5 shadow-2xl border border-border-subtle space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-7 h-7 rounded-full bg-primary-fixed text-primary text-xs font-bold flex items-center justify-center">2/2</span>
+          <h3 class="font-extrabold text-sm text-on-surface">Confirm Handover & Review</h3>
+        </div>
+        <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline" onclick="closeReviewModal()">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
 
+      <!-- Two-way Checklist -->
+      <div class="space-y-2 bg-surface-container-low p-3 rounded-2xl text-xs">
+        <label class="flex items-start gap-2.5 cursor-pointer">
+          <input type="checkbox" checked class="mt-0.5 w-4 h-4 rounded accent-primary"/>
+          <div>
+            <p class="font-bold text-on-surface">Item physically inspected</p>
+            <p class="text-[11px] text-on-surface-variant">Condition matches description; no flaws.</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-2.5 cursor-pointer">
+          <input type="checkbox" checked class="mt-0.5 w-4 h-4 rounded accent-primary"/>
+          <div>
+            <p class="font-bold text-on-surface">Payment / PIN exchanged</p>
+            <p class="text-[11px] text-on-surface-variant">4-digit PIN verified; ready for escrow release.</p>
+          </div>
+        </label>
+      </div>
+
+      <!-- Star Rating -->
+      <div class="text-center space-y-1">
+        <p id="review-rating-label" class="text-xs font-bold text-on-surface">Rate this student's reputation</p>
+        <div class="flex justify-center gap-1.5 text-2xl text-tertiary cursor-pointer" id="rating-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+      </div>
+
+      <!-- Review Comment -->
+      <input id="review-comment" type="text" placeholder="Friendly student, showed up on time at Moffitt!" class="w-full h-11 px-3.5 rounded-xl bg-surface border border-border-subtle text-xs text-on-surface focus:outline-none"/>
+
+      <button type="button" class="w-full h-12 rounded-xl bg-secondary text-on-secondary font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-secondary-fixed-variant transition-colors" onclick="submitHandoverReview()">
+        <span class="material-symbols-outlined text-lg">handshake</span>
+        <span>Submit Review & Release Payout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Payout Settled Celebration Modal (#modal-payout-settled) -->
+  <div id="modal-payout-settled" class="modal-overlay hidden fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="modal-content w-full max-w-sm bg-surface-container-lowest rounded-3xl p-6 shadow-2xl border border-border-subtle text-center space-y-3">
+      <div class="w-16 h-16 rounded-full bg-campus-emerald-light text-secondary flex items-center justify-center mx-auto shadow-sm">
+        <span class="material-symbols-outlined text-3xl filled">check_circle</span>
+      </div>
+      <h3 class="text-xl font-extrabold text-on-surface">Handover Complete!</h3>
+      <p class="text-xs text-on-surface-variant">
+        <span id="payout-amount-text">$0.00</span> payout was settled to your account with <strong class="text-secondary">$0 platform fees</strong>.
+      </p>
+      <div class="pt-2 flex flex-col gap-2">
+        <button type="button" class="w-full h-11 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-xs" onclick="closePayoutModal(); navigateTo('receipt');">
+          View Official Receipt
+        </button>
+        <button type="button" class="w-full h-11 rounded-xl bg-surface-container text-on-surface font-bold text-xs" onclick="closePayoutModal(); navigateTo('seller');">
+          Go to Seller Studio
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. PDF Receipt Preview Modal (#modal-pdf-preview) -->
+  <div id="modal-pdf-preview" class="modal-overlay hidden fixed inset-0 z-50 bg-inverse-surface/70 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) closePdfModal()">
+    <div class="modal-content w-full max-w-2xl bg-surface-container-lowest rounded-3xl p-5 shadow-2xl border border-border-subtle max-h-[90vh] overflow-y-auto space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">picture_as_pdf</span>
+          <h3 class="font-bold text-sm text-on-surface">PDF Receipt Preview <span id="pdf-modal-title">#TX-0000-CAL</span></h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" class="h-8 px-3 rounded-full bg-primary text-on-primary text-xs font-bold flex items-center gap-1 shadow-xs" onclick="window.print()">
+            <span class="material-symbols-outlined text-sm">print</span>
+            <span>Print / Save PDF</span>
+          </button>
+          <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline" onclick="closePdfModal()">
+            <span class="material-symbols-outlined text-lg">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PDF Canvas Representation -->
+      <div class="p-6 bg-white rounded-2xl border border-border-subtle text-slate-800 space-y-4 text-xs font-sans shadow-sm">
+        <div class="flex justify-between items-start border-b border-slate-200 pb-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-indigo-700">CAMPUS HUSTLE</h2>
+            <p class="text-slate-500 text-[11px]">Associated Students of California • Peer-to-Peer Marketplace</p>
+          </div>
+          <div class="text-right">
+            <span id="pdf-tx-id" class="font-mono text-slate-600 font-bold">#TX-0000-CAL</span>
+            <p class="text-[10px] text-emerald-600 font-bold">ASUC SEALED • VERIFIED</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 py-2">
+          <div>
+            <span class="text-slate-400 block text-[10px] uppercase font-bold">Buyer</span>
+            <p id="pdf-buyer-name" class="font-bold">—</p>
+            <p id="pdf-buyer-email" class="text-slate-500">—</p>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px] uppercase font-bold">Seller</span>
+            <p id="pdf-seller-name" class="font-bold">—</p>
+            <p id="pdf-seller-email" class="text-slate-500">—</p>
+          </div>
+        </div>
+
+        <table class="w-full border-t border-b border-slate-200 py-2">
+          <thead class="text-slate-400 text-[10px] uppercase text-left">
+            <tr><th class="py-1">Description</th><th class="text-right">Qty</th><th class="text-right">Amount</th></tr>
+          </thead>
+          <tbody class="font-semibold">
+            <tr><td id="pdf-item" class="py-1.5">—</td><td id="pdf-qty" class="text-right">1</td><td id="pdf-amount" class="text-right">$0.00</td></tr>
+            <tr><td class="py-1.5 text-slate-500">Platform Convenience Fee</td><td class="text-right">1</td><td class="text-right text-emerald-600">$0.00</td></tr>
+          </tbody>
+        </table>
+
+        <div class="flex justify-between text-base font-extrabold pt-2">
+          <span>Net Disbursed to Seller</span>
+          <span id="pdf-total" class="text-indigo-700">$0.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. CSV Tax Summary Export Modal (#modal-csv-export) -->
+  <div id="modal-csv-export" class="modal-overlay hidden fixed inset-0 z-50 bg-inverse-surface/70 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) closeCsvModal()">
+    <div class="modal-content w-full max-w-md bg-surface-container-lowest rounded-3xl p-5 shadow-2xl border border-border-subtle space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">table_view</span>
+          <h3 id="csv-modal-title" class="font-extrabold text-sm text-on-surface">Sales & Tax Ledger Export</h3>
+        </div>
+        <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline" onclick="closeCsvModal()">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="bg-surface-container-low p-3.5 rounded-2xl space-y-2">
+        <div class="flex justify-between text-xs">
+          <span id="csv-gross-label" class="text-outline">Gross Sales (0 Deals):</span>
+          <span id="csv-gross-amount" class="font-bold text-on-surface">$0.00</span>
+        </div>
+        <div class="flex justify-between text-xs">
+          <span class="text-outline">Campus 1099-K Safe Cap:</span>
+          <span class="font-bold text-secondary">10.5% ($5,000 Cap)</span>
+        </div>
+        <!-- Progress bar -->
+        <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+          <div class="bg-primary h-full w-[10.5%]"></div>
+        </div>
+        <p class="text-[10px] text-campus-emerald-dark font-bold">ASUC Compliant • 1099-K Exempt Student Status</p>
+      </div>
+
+      <button type="button" class="w-full h-12 rounded-xl bg-primary text-on-primary font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:bg-primary-container transition-colors" onclick="downloadActualCsvFile()">
+        <span class="material-symbols-outlined text-base">download</span>
+        <span>Download Official CSV Spreadsheet</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 6. Notifications Modal Sheet (#modal-notifications) -->
+  <div id="modal-notifications" class="modal-overlay hidden fixed inset-0 z-50 bg-inverse-surface/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target===this) closeNotificationsModal()">
+    <div class="modal-content drawer-bottom w-full max-w-md bg-surface-container-lowest rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border border-border-subtle max-h-[80vh] overflow-y-auto space-y-3">
+      <div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+        <h3 class="font-extrabold text-sm text-on-surface">Campus Notifications</h3>
+        <button type="button" class="text-xs text-primary font-bold hover:underline" onclick="closeNotificationsModal()">Close</button>
+      </div>
+      <div id="notifications-list" class="space-y-2.5">
+        <!-- Rendered dynamically from app state -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Campus Switcher Modal (#modal-campus-select) -->
+  <div id="modal-campus-select" class="modal-overlay hidden fixed inset-0 z-50 bg-inverse-surface/50 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) closeCampusModal()">
+    <div class="modal-content w-full max-w-sm bg-surface-container-lowest rounded-3xl p-5 shadow-2xl border border-border-subtle space-y-3">
+      <div class="flex items-center justify-between pb-1">
+        <h3 class="font-extrabold text-sm text-on-surface">Select Your Campus</h3>
+        <button type="button" class="w-7 h-7 rounded-full hover:bg-surface-container flex items-center justify-center text-outline" onclick="closeCampusModal()">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+      <div class="space-y-1.5 text-xs font-semibold">
+        <button type="button" class="w-full text-left p-3 rounded-xl hover:bg-surface-container bg-electric-indigo-light text-primary flex items-center justify-between" onclick="setCampus('UC Berkeley')">
+          <span>University of California, Berkeley</span>
+          <span class="material-symbols-outlined text-sm">check</span>
+        </button>
+        <button type="button" class="w-full text-left p-3 rounded-xl hover:bg-surface-container text-on-surface" onclick="setCampus('Stanford University')">
+          <span>Stanford University</span>
+        </button>
+        <button type="button" class="w-full text-left p-3 rounded-xl hover:bg-surface-container text-on-surface" onclick="setCampus('UCLA')">
+          <span>University of California, Los Angeles</span>
+        </button>
+        <button type="button" class="w-full text-left p-3 rounded-xl hover:bg-surface-container text-on-surface" onclick="setCampus('UT Austin')">
+          <span>University of Texas at Austin</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Floating Toast Container -->
+  <div id="toast-container" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2"></div>
+
+  <!-- Application Scripts -->
+  <script src="api.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -2,8 +2,18 @@
   "name": "campus-hustle-ui",
   "version": "1.0.0",
   "private": true,
-  "description": "Presentation-ready Campus Hustle marketplace UI prototype",
+  "description": "Campus Hustle - High-Trust Peer-to-Peer Student Marketplace UI",
   "scripts": {
-    "start": "python -m http.server 5500"
-  }
+    "build": "echo 'Campus Hustle build ready'",
+    "start": "python -m http.server 2501",
+    "dev": "python -m http.server 2501"
+  },
+  "keywords": [
+    "campus-marketplace",
+    "fastapi",
+    "tailwind",
+    "vercel"
+  ],
+  "author": "Campus Hustle Team",
+  "license": "MIT"
 }
