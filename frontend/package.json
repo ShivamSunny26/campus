@@ -1,0 +1,9 @@
+{
+  "name": "campus-hustle-ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Presentation-ready Campus Hustle marketplace UI prototype",
+  "scripts": {
+    "start": "python -m http.server 5500"
+  }
+}

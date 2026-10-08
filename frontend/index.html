@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Hustle — Campus Marketplace</title>
+  <meta name="description" content="A polished campus marketplace prototype for buying, selling and bargaining." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">CH</div>
+        <div>
+          <strong>Campus Hustle</strong>
+          <span>your campus. your market.</span>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="nav-item active" data-page="home"><span>⌂</span> Explore</button>
+        <button class="nav-item" data-page="saved"><span>♡</span> Saved <b>4</b></button>
+        <button class="nav-item" data-page="messages"><span>◌</span> Messages <b class="hot">3</b></button>
+        <button class="nav-item" data-page="orders"><span>▣</span> My deals</button>
+        <button class="nav-item" data-page="seller"><span>▤</span> Seller studio</button>
+      </nav>
+
+      <div class="campus-card">
+        <div class="campus-icon">⌖</div>
+        <div>
+          <small>YOUR CAMPUS</small>
+          <strong>SRM University</strong>
+          <span>Kattankulathur · 1.2 km</span>
+        </div>
+        <button class="tiny-icon">⌄</button>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-page="profile"><span>◉</span> Profile</button>
+        <button class="nav-item" data-page="settings"><span>⚙</span> Settings</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu">☰</button>
+        <div class="mobile-brand">Campus Hustle</div>
+        <div class="search-wrap">
+          <span>⌕</span>
+          <input id="searchInput" placeholder="Search laundry, notes, food, rentals..." />
+          <kbd>⌘ K</kbd>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" id="notificationBtn" title="Notifications">♢<i></i></button>
+          <button class="sell-button" data-page="create">+ Sell something</button>
+          <button class="avatar-button" data-page="profile">SK</button>
+        </div>
+      </header>
+
+      <section id="page-home" class="page active-page">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="pulse"></span> LIVE ON CAMPUS</div>
+            <h1>Stop asking<br><em>“still available?”</em></h1>
+            <p>Buy, sell, bargain and get things done around campus — without digging through 40 WhatsApp groups.</p>
+            <div class="hero-actions">
+              <button class="primary-btn" data-page="create">List an item <span>→</span></button>
+              <button class="ghost-btn" onclick="scrollToMarket()">Explore marketplace</button>
+            </div>
+            <div class="trust-row">
+              <span>✓ Campus verified</span>
+              <span>✓ In-app chat</span>
+              <span>✓ No hidden fees</span>
+            </div>
+          </div>
+          <div class="hero-art">
+            <div class="orbit orbit-a"></div>
+            <div class="orbit orbit-b"></div>
+            <div class="float-card fc-top"><span class="mini-icon purple">♧</span><div><b>Fresh laundry</b><small>₹70 · 2h ago</small></div><span class="status-dot"></span></div>
+            <div class="float-card fc-left"><span class="mini-icon orange">⌂</span><div><b>Roommate needed</b><small>₹5,500 / month</small></div></div>
+            <div class="phone-card">
+              <div class="phone-notch"></div>
+              <div class="phone-header"><b>Today on campus</b><span>•••</span></div>
+              <div class="mini-listing">
+                <div class="mini-photo laundry-photo">🧺</div>
+                <div><strong>Wash & Fold</strong><small>Pickup at hostel gate</small><b>₹70 <del>₹90</del></b></div>
+              </div>
+              <div class="mini-listing">
+                <div class="mini-photo food-photo">🥪</div>
+                <div><strong>Midnight sandwiches</strong><small>Block B · 11 PM</small><b>₹45</b></div>
+              </div>
+              <div class="mini-listing">
+                <div class="mini-photo notes-photo">📚</div>
+                <div><strong>DBMS notes</strong><small>Semester 5 · PDF + print</small><b>₹30</b></div>
+              </div>
+              <div class="phone-tab"><span>⌂</span><span>♡</span><span class="plus-tab">+</span><span>◌</span><span>◉</span></div>
+            </div>
+            <div class="verified-badge">✓ <span>Verified campus sellers</span></div>
+          </div>
+        </div>
+
+        <div id="market" class="content-section">
+          <div class="section-head">
+            <div><span class="section-kicker">DISCOVER</span><h2>What do you need today?</h2></div>
+            <button class="text-btn">View all categories →</button>
+          </div>
+          <div class="category-grid">
+            <button class="category active"><span>🧺</span><b>Laundry</b><small>24 listings</small></button>
+            <button class="category"><span>🍜</span><b>Food</b><small>18 listings</small></button>
+            <button class="category"><span>📚</span><b>Study stuff</b><small>42 listings</small></button>
+            <button class="category"><span>🏠</span><b>Rentals</b><small>9 listings</small></button>
+            <button class="category"><span>🎧</span><b>Electronics</b><small>16 listings</small></button>
+            <button class="category"><span>✨</span><b>Services</b><small>31 listings</small></button>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-head">
+            <div><span class="section-kicker">NEAR YOU</span><h2>Fresh around campus</h2></div>
+            <div class="filter-pills"><button class="filter active">All</button><button class="filter">Under ₹500</button><button class="filter">New today</button></div>
+          </div>
+          <div id="listingGrid" class="listing-grid"></div>
+        </div>
+
+        <div class="trust-banner">
+          <div class="shield">✓</div>
+          <div><strong>Built for student-to-student trust.</strong><p>Campus email verification, seller ratings, transparent prices and a safe in-app chat.</p></div>
+          <button class="text-btn">How trust works →</button>
+        </div>
+      </section>
+
+      <section id="page-saved" class="page">
+        <div class="page-heading"><div><span class="section-kicker">YOUR SHORTLIST</span><h1>Saved items</h1><p>Keep the things you might want later in one place.</p></div></div>
+        <div id="savedGrid" class="listing-grid"></div>
+      </section>
+
+      <section id="page-messages" class="page">
+        <div class="page-heading"><div><span class="section-kicker">CONVERSATIONS</span><h1>Messages</h1><p>Bargain, ask questions, agree on a pickup.</p></div><button class="secondary-btn">+ New message</button></div>
+        <div class="messages-layout">
+          <div class="conversation-list" id="conversationList"></div>
+          <div class="chat-panel">
+            <div class="chat-head"><div class="seller-avatar avatar-purple">AM</div><div><strong>Ananya Mehta</strong><span>● Online · Verified seller</span></div><button>⋯</button></div>
+            <div class="chat-context"><div class="tiny-product laundry-photo">🧺</div><div><small>ABOUT THIS LISTING</small><strong>Wash & Fold · ₹70 / kg</strong></div><button>View listing →</button></div>
+            <div class="chat-body" id="chatBody">
+              <div class="chat-date">TODAY</div>
+              <div class="bubble other">Hey! I can pick up 4 kg today. Can you do ₹55/kg?</div>
+              <div class="bubble me">For 4 kg, I can do ₹60/kg. Pickup from Block B gate?</div>
+              <div class="bubble other">Deal 🤝 I’ll be there around 6:30.</div>
+              <div class="deal-card"><div class="deal-check">✓</div><div><small>DEAL AGREED</small><strong>4 kg · ₹240 total</strong><span>Pickup today · Block B gate</span></div><button>Confirm</button></div>
+            </div>
+            <div class="quick-replies"><button>Can you do ₹50?</button><button>Where's pickup?</button><button>Still available?</button></div>
+            <div class="chat-input"><button>＋</button><input id="chatInput" placeholder="Write a message..." /><button class="send" id="sendMessage">↑</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-orders" class="page">
+        <div class="page-heading"><div><span class="section-kicker">YOUR ACTIVITY</span><h1>My deals</h1><p>Everything you've bought or sold on Campus Hustle.</p></div><div class="tabs"><button class="tab active">Buying</button><button class="tab">Selling</button></div></div>
+        <div class="deal-stats"><div><small>ACTIVE</small><strong>2</strong></div><div><small>COMPLETED</small><strong>8</strong></div><div><small>SAVED</small><strong>4</strong></div><div><small>YOU SAVED</small><strong>₹1,240</strong></div></div>
+        <div class="orders-list">
+          <div class="order-card"><div class="order-img laundry-photo">🧺</div><div class="order-main"><span class="tag green">CONFIRMED</span><h3>Wash & Fold · 4 kg</h3><p>Pickup today, 6:30 PM · Block B gate</p><strong>₹240</strong></div><button class="outline-btn">Open chat</button></div>
+          <div class="order-card"><div class="order-img notes-photo">📚</div><div class="order-main"><span class="tag gray">COMPLETED</span><h3>DBMS Complete Notes</h3><p>Delivered yesterday by Rahul S.</p><strong>₹30</strong></div><button class="outline-btn">Rate seller</button></div>
+        </div>
+      </section>
+
+      <section id="page-seller" class="page">
+        <div class="page-heading"><div><span class="section-kicker">SELLER STUDIO</span><h1>Make your hustle official.</h1><p>Manage listings, respond to buyers and see what is working.</p></div><button class="primary-btn" data-page="create">+ New listing</button></div>
+        <div class="seller-metrics"><div class="metric"><span>💰</span><small>THIS MONTH</small><strong>₹12,480</strong><em>↑ 18.4%</em></div><div class="metric"><span>👀</span><small>LISTING VIEWS</small><strong>2,841</strong><em>↑ 24.1%</em></div><div class="metric"><span>🤝</span><small>DEALS CLOSED</small><strong>46</strong><em>↑ 12.8%</em></div><div class="metric"><span>★</span><small>RATING</small><strong>4.9</strong><em>from 38 reviews</em></div></div>
+        <div class="studio-grid"><div class="panel chart-panel"><div class="panel-head"><div><small>SALES OVERVIEW</small><h3>Last 7 days</h3></div><select><option>Last 7 days</option></select></div><div class="chart"><div class="chart-grid"></div><svg viewBox="0 0 600 180" preserveAspectRatio="none"><path d="M0 150 C60 142,70 110,120 124 S190 120,230 90 S290 118,335 85 S390 105,430 60 S490 82,540 45 S575 50,600 20" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M0 150 C60 142,70 110,120 124 S190 120,230 90 S290 118,335 85 S390 105,430 60 S490 82,540 45 S575 50,600 20 V180 H0Z" fill="currentColor" opacity=".08"/></svg></div><div class="chart-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></div>
+          <div class="panel"><div class="panel-head"><div><small>ACTIVE LISTINGS</small><h3>Your items</h3></div><button class="text-btn">Manage all →</button></div><div class="mini-item"><div class="item-thumb laundry-photo">🧺</div><div><strong>Wash & Fold</strong><span>12 inquiries · 6 sold</span></div><b>₹70/kg</b></div><div class="mini-item"><div class="item-thumb food-photo">🥪</div><div><strong>Midnight Sandwiches</strong><span>8 inquiries · 14 sold</span></div><b>₹45</b></div><div class="mini-item"><div class="item-thumb notes-photo">📚</div><div><strong>DBMS Notes</strong><span>23 views · 4 sold</span></div><b>₹30</b></div></div></div>
+      </section>
+
+      <section id="page-create" class="page">
+        <div class="page-heading"><div><span class="section-kicker">SELL SOMETHING</span><h1>Create a listing</h1><p>Tell campus what you have. Keep it simple and honest.</p></div><div class="draft-status">● Draft saved</div></div>
+        <div class="create-layout">
+          <div class="form-panel">
+            <label>What are you offering?<input value="Wash & Fold Laundry Service" /></label>
+            <div class="two-col"><label>Category<select><option>Laundry</option><option>Food</option><option>Study stuff</option><option>Rentals</option><option>Electronics</option><option>Services</option></select></label><label>Price<input value="70" /><small>₹ per kg</small></label></div>
+            <label>Description<textarea>Fresh wash & fold service for hostel students. Pickup from Block B gate. Same-day delivery for orders before 5 PM.</textarea></label>
+            <label>Pickup / delivery point<input value="Block B Hostel Gate" /></label>
+            <div class="upload-box"><div class="upload-icon">↑</div><strong>Add photos</strong><span>Drag & drop or browse · Up to 6 images</span><button class="outline-btn">Choose files</button></div>
+            <div class="trust-check"><input type="checkbox" checked /><div><strong>I'm a verified campus seller</strong><span>Buyers see your verification badge on this listing.</span></div></div>
+            <div class="form-actions"><button class="ghost-btn" data-page="home">Cancel</button><button class="primary-btn" id="publishBtn">Publish listing →</button></div>
+          </div>
+          <div class="preview-panel"><small>LIVE PREVIEW</small><div class="preview-card"><div class="preview-photo laundry-photo">🧺<span>♡</span></div><div class="preview-content"><div class="verified-line">✓ VERIFIED SELLER · 4.9 ★</div><h3>Wash & Fold Laundry Service</h3><p>Fresh wash & fold service for hostel students...</p><div class="preview-bottom"><strong>₹70<small>/ kg</small></strong><span>⌖ 0.4 km</span></div><button class="full-btn">Message seller</button></div></div><div class="tip-box"><span>💡</span><div><strong>Pro tip</strong><p>Listings with 3+ photos get about 2× more inquiries.</p></div></div></div>
+        </div>
+      </section>
+
+      <section id="page-profile" class="page">
+        <div class="profile-cover"><div class="profile-avatar">SK</div><div><span class="verified-line">✓ CAMPUS VERIFIED</span><h1>Shivam Kumar</h1><p>Computer Science · Year 3 · SRM University</p></div><button class="outline-btn">Edit profile</button></div>
+        <div class="profile-grid"><div class="panel"><small>ABOUT</small><h3>Campus seller & buyer</h3><p class="muted">Helping students get everyday campus essentials without the WhatsApp chaos.</p><div class="profile-info"><span>★ 4.9 rating</span><span>🤝 14 deals</span><span>♧ Member since 2026</span></div></div><div class="panel"><small>TRUST SCORE</small><div class="trust-score"><strong>98</strong><span>/ 100</span></div><div class="progress"><i></i></div><p class="muted">Great standing. Your profile is trusted by the campus community.</p></div></div>
+      </section>
+
+      <section id="page-settings" class="page">
+        <div class="page-heading"><div><span class="section-kicker">PREFERENCES</span><h1>Settings</h1><p>Control your Campus Hustle experience.</p></div></div>
+        <div class="settings-list"><div><div><strong>Campus notifications</strong><span>New messages, deals and nearby listings.</span></div><button class="toggle on"></button></div><div><div><strong>Only show verified sellers</strong><span>Prioritize campus-verified people in Explore.</span></div><button class="toggle on"></button></div><div><div><strong>Show my online status</strong><span>Let buyers know when you are available to chat.</span></div><button class="toggle"></button></div><div><div><strong>Safety center</strong><span>Learn how to meet safely and report a problem.</span></div><button class="text-btn">Open →</button></div></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"><span>✓</span><div><strong>Listing published!</strong><small>Your item is now visible to students nearby.</small></div></div>
+  <div class="modal hidden" id="notificationModal"><div class="modal-card"><div class="modal-head"><h3>Notifications</h3><button id="closeModal">×</button></div><div class="notification"><span class="notif-icon green-bg">✓</span><div><strong>Deal confirmed</strong><p>Your ₹240 laundry deal is confirmed.</p><small>2 min ago</small></div></div><div class="notification"><span class="notif-icon purple-bg">♡</span><div><strong>Someone saved your listing</strong><p>DBMS Complete Notes has a new save.</p><small>24 min ago</small></div></div><div class="notification"><span class="notif-icon orange-bg">₹</span><div><strong>New bargain</strong><p>Rahul offered ₹550 for your headphones.</p><small>1 hr ago</small></div></div></div></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
